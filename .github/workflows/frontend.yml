@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - nav-bar
   pull_request:
     branches:
       - main
