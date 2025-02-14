@@ -24,7 +24,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # Copy build output from the previous stage
-COPY --from=build /app/dist/PhumlaniArendse .  # Replace with your actual Angular app folder
+COPY --from=build /app/dist/portfolio .  # Replace with your actual Angular app folder
 
 # Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
