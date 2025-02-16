@@ -1,12 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
+  darkMode: 'class', // Enables class-based dark mode
   content: ['./src/**/*.{html,ts}'],
   theme: {
     extend: {},
   },
-  plugins: [require('@tailwindcss/aspect-ratio')
-,require('@tailwindcss/forms')
-,require('@tailwindcss/line-clamp')
-,require('@tailwindcss/typography')
-],
+  plugins: [],
 };

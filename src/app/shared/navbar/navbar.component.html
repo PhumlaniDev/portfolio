@@ -92,6 +92,7 @@
           </li>
         </ul>
       </nav>
+      <!-- Socials -->
       <div class="flex items-center gap-2">
         <a class="hidden md:block" target="_blank" href="https://github.com/PhumlaniDev">
           <svg
@@ -145,6 +146,13 @@
             </g>
           </svg>
         </a>
+      </div>
+      <!-- Theme switching -->
+      <div class="flex items-center gap-2">
+        <button (click)="toggleDarkMode()">
+          <span *ngIf="isDarkMode" class="material-icons bg">dark_mode</span>
+          <span *ngIf="!isDarkMode" class="material-icons">light_mode</span>
+        </button>
       </div>
     </header>
   </div>
