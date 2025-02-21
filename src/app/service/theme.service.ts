@@ -4,27 +4,44 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ThemeService {
-  private darkModeKey = 'dark-mode';
+  private readonly themeKey = 'theme';
 
   constructor() {
     this.loadTheme();
   }
 
-  toggleTheme(): void {
-    const html = document.documentElement;
-    if (html.classList.contains('dark')) {
-      html.classList.remove('dark');
-      localStorage.setItem(this.darkModeKey, 'light');
+  private loadTheme(): void {
+    const savedTheme = localStorage.getItem(this.themeKey);
+    if (savedTheme) {
+      this.applyTheme(savedTheme);
     } else {
-      html.classList.add('dark');
-      localStorage.setItem(this.darkModeKey, 'dark');
+      // Default to system preference
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.applyTheme(prefersDark ? 'dark' : 'light');
     }
   }
 
-  loadTheme(): void {
-    const storedTheme = localStorage.getItem(this.darkModeKey);
-    if (storedTheme === 'dark') {
-      document.documentElement.classList.add('dark');
+  private applyTheme(theme: string): void {
+    const html = document.documentElement;
+    if (theme === 'dark') {
+      html.classList.add('dark');
+      html.classList.remove('light');
+    } else {
+      html.classList.add('light');
+      html.classList.remove('dark');
     }
+    html.style.backgroundColor = theme === 'dark' ? '#343541' : '#ffffff';
+    html.style.color = theme === 'dark' ? '#ffffff' : '#000000';
+    localStorage.setItem(this.themeKey, theme);
+  }
+
+  toggleTheme(): void {
+    const currentTheme = localStorage.getItem(this.themeKey) ?? 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    this.applyTheme(newTheme);
+  }
+
+  isDarkMode(): boolean {
+    return localStorage.getItem(this.themeKey) === 'dark';
   }
 }

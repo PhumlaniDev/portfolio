@@ -1,5 +1,6 @@
+import { Component, OnInit } from '@angular/core';
+
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
 import { ThemeService } from '../../service/theme.service';
 
 @Component({
@@ -8,15 +9,26 @@ import { ThemeService } from '../../service/theme.service';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent {
-  isDarkMode = false;
+export class NavbarComponent implements OnInit {
+  isDarkMode!: boolean; // Tracks if the current theme is dark mode
+  menuOpen = false; // Tracks if the mobile menu is open or closed
 
-  constructor(private themeService: ThemeService) {
-    this.isDarkMode = document.documentElement.classList.contains('dark');
+  constructor(private readonly themeService: ThemeService) {}
+
+  ngOnInit(): void {
+    this.isDarkMode = this.themeService.isDarkMode();
   }
 
   toggleDarkMode(): void {
     this.themeService.toggleTheme();
-    this.isDarkMode = !this.isDarkMode;
+    this.isDarkMode = this.themeService.isDarkMode();
+  }
+
+  toggleMenu(): void {
+    this.menuOpen = !this.menuOpen; // Toggles the menu state
+  }
+
+  closeMenu(): void {
+    this.menuOpen = false; // Ensures the menu closes when a link is clicked
   }
 }

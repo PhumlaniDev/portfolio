@@ -1,2 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'tailwindcss';
+
+// :root {
+//   --color-bg-light: #ffffff;
+//   --color-text-light: #000000;
+//   --color-bg-dark: #343541;
+//   --color-text-dark: #ffffff;
+// }
+
+/* Apply global styles */
+// html {
+//   background-color: var(--color-bg-light);
+//   color: var(--color-text-light);
+//   transition:
+//     background-color 0.3s ease,
+//     color 0.3s ease;
+// }
+
+// html.dark {
+//   background-color: var(--color-bg-dark);
+//   color: var(--color-text-dark);
+// }

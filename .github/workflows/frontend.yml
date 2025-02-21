@@ -102,7 +102,9 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/phumlani_arendse-portfolio:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/phumlani_arendse-portfolio:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/phumlani_arendse-portfolio:${{ github.run_number }}
 
   # deploy:
   #   name: Deploy to GitHub Pages
