@@ -33,8 +33,11 @@ jobs:
       - name: Run Prettier Check
         run: npx prettier --check "src/**/*.ts"
 
+      - name: Debug Build Output
+        run: ls -l dist/
+
       - name: Build Project
-        run: npm run build --if-present
+        run: npm run build --configuration portfolio
 
   lint:
     name: Lint Code
