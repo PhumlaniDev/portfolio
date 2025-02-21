@@ -4,15 +4,17 @@ FROM node:20 AS build
 # Set working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Copy package files
 COPY package.json package-lock.json ./
+
+# Install the dependencies
 RUN npm install
 
 # Copy the rest of the app source code
 COPY . .
 
 # Build the Angular app
-RUN npm run build --configuration portfolio
+RUN npm run build --output-path=dist/portfolio --prod
 
 # Step 2: Serve App with Nginx
 FROM nginx:1.25-alpine
@@ -24,7 +26,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # Copy build output from the previous stage
-COPY --from=build /app/dist/portfolio .  # Replace with your actual Angular app folder
+COPY --from=build /app/dist/portfolio/ . 
 
 # Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
