@@ -30,8 +30,8 @@ export class ThemeService {
       html.classList.add('light');
       html.classList.remove('dark');
     }
-    html.style.backgroundColor = theme === 'dark' ? '#343541' : '#ffffff';
-    html.style.color = theme === 'dark' ? '#ffffff' : '#000000';
+    html.style.backgroundColor = theme === 'dark' ? '#020817' : '#F8FAFC';
+    html.style.color = theme === 'dark' ? '#F8FAFC' : '#000000';
     localStorage.setItem(this.themeKey, theme);
   }
 

@@ -1,0 +1,100 @@
+{
+  "projects": [
+    {
+      "name": "project 1",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 2",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 3",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 4",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 5",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 6",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 1",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 2",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 3",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 4",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 5",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 6",
+      "backgroundImage": "assets/images/construction.svg",
+      "description": "description",
+      "tags": ["##java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    }
+  ]
+}

@@ -1,1 +1,42 @@
-<p>projects works!</p>
+<h1 class="text-3xl font-bold pt-5">All Projects 📂</h1>
+
+<div class="flex flex-wrap gap-6 mt-8 w-full mb-6">
+  <div
+    *ngFor="let project of projects"
+    class="border-gray-100 dark:border-none shadow-lg rounded-lg px-5 py-6 w-full md:w-[calc(50%-12px)]"
+  >
+    <img
+      *ngIf="project.backgroundImage"
+      [src]="project.backgroundImage"
+      class="rounded-t-lg w-full h-40 object-cover"
+      alt="project"
+    />
+    <h3 class="text-xl font-bold sm:text-2xl">{{ project.name }}</h3>
+    <p class="line-clamp-3 w-full pt-3 text-gray-600 dark:text-gray-400">
+      {{ project.description }}
+    </p>
+    <ul class="flex flex-row gap-3 mt-2">
+      <li *ngFor="let tag of project.tags">
+        <span class="text-blue-500">
+          {{ tag }}
+        </span>
+      </li>
+    </ul>
+    <div class="mt-4 flex justify-between">
+      <a
+        *ngIf="project.github"
+        [href]="project.github"
+        target="_blank"
+        class="text-blue-500 hover:underline"
+        >GitHub</a
+      >
+      <a
+        *ngIf="project.demo"
+        [href]="project.demo"
+        target="_blank"
+        class="text-green-500 hover:underline"
+        >Live Demo</a
+      >
+    </div>
+  </div>
+</div>
