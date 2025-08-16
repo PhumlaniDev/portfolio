@@ -1,0 +1,112 @@
+{
+  "projects": [
+    {
+      "name": "E-Commerce Microservices Application",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "Scalable e-commerce platform built with Spring Boot microservices and Angular frontend.",
+      "description": "A production-ready e-commerce platform built using Spring Boot microservices architecture. The system is designed with modular services such as product catalog, order management, payment processing, and inventory. It uses PostgreSQL for data persistence and communicates via REST APIs. The frontend is developed with Angular and styled using TailwindCSS, delivering a responsive and seamless shopping experience. This project showcases scalable full-stack development with a strong focus on clean architecture and cloud-ready deployment.",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres", "#microservices", "#ecommerce", "#springboot", "kafka"],
+      "github": "https://github.com/PhumlaniDev/infinity-tech-order-service",
+      "demo": ""
+    },
+    {
+      "name": "project 2",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 3",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 4",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 5",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 6",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 7",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 8",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 9",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 10",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 11",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["#java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    },
+    {
+      "name": "project 12",
+      "backgroundImage": "assets/images/construction.svg",
+      "shortDescription": "",
+      "description": "description",
+      "tags": ["##java", "#angular", "#tailwindcss", "#fullstack", "#postgres"],
+      "github": "",
+      "demo": ""
+    }
+  ]
+}
