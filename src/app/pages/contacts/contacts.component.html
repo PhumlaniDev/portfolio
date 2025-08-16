@@ -1,9 +1,7 @@
 <!-- component -->
 <div class="flex items-center justify-center p-12">
-  <!-- Author: FormBold Team -->
-  <!-- Learn More: https://formbold.com -->
   <div class="mx-auto w-full max-w-[550px]">
-    <form action="https://formspree.io/f/{FORM_ID}" method="POST">
+    <form name="contact" method="POST" netlify netlify-honeypot="bot-field" action="/thank-you">
       <div class="mb-5">
         <label for="name" class="mb-3 block text-base font-medium text-[#07074D]">
           Full Name
@@ -13,6 +11,7 @@
           name="name"
           id="name"
           placeholder="Full Name"
+          required
           class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
         />
       </div>
@@ -25,6 +24,7 @@
           name="email"
           id="email"
           placeholder="example@domain.com"
+          required
           class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
         />
       </div>
@@ -37,8 +37,11 @@
           name="subject"
           id="subject"
           placeholder="Enter your subject"
+          required
           class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
         />
+        <input type="hidden" name="form-name" value="contact" />
+        <input type="hidden" name="bot-field" />
       </div>
       <div class="mb-5">
         <label for="message" class="mb-3 block text-base font-medium text-[#07074D]">
@@ -49,11 +52,13 @@
           name="message"
           id="message"
           placeholder="Type your message"
+          required
           class="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
         ></textarea>
       </div>
       <div>
         <button
+          type="submit"
           class="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none"
         >
           Submit
