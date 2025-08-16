@@ -1,5 +1,8 @@
 # Portfolio
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/4b19d818-f4bc-4b38-8d64-38e9868782e7/deploy-status)](https://app.netlify.com/projects/phumlanidev/deploys)
+[![Frontend CI/CD](https://github.com/PhumlaniDev/portfolio/actions/workflows/frontend.yml/badge.svg?branch=develop)](https://github.com/PhumlaniDev/portfolio/actions/workflows/frontend.yml)
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.7.
 
 ## Development server
