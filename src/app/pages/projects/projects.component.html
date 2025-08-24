@@ -1,7 +1,8 @@
 <h1 class="text-3xl font-bold pt-5">All Projects 📂</h1>
 
-<p class="text-gray-600 dark:text-gray-400 pt-2">
-  Full-stack and DevOps projects — from Spring Boot microservices to Angular frontends and CI/CD pipelines. You can find more details and source code on my GitHub.
+<p class="pt-2">
+  Full-stack and DevOps projects — from Spring Boot microservices to Angular frontends and CI/CD
+  pipelines. You can find more details and source code on my GitHub.
 </p>
 
 <div class="flex flex-wrap gap-6 mt-6 w-full mb-6">
@@ -13,10 +14,12 @@
       *ngIf="project.backgroundImage"
       [src]="project.backgroundImage"
       class="rounded-t-lg w-full h-40 object-cover"
-      alt="project" src=""/>
+      alt="project"
+      src=""
+    />
     <h3 class="text-xl font-bold sm:text-2xl">{{ project.name }}</h3>
-    <p class="line-clamp-3 text-xl w-full pt-3 text-gray-600 dark:text-gray-800">{{ project.shortDescription }}</p>
-    <p class="line-clamp-3 w-full pt-3 text-gray-600 dark:text-gray-400">
+    <p class="line-clamp-3 text-xl w-full pt-3">{{ project.shortDescription }}</p>
+    <p class="line-clamp-3 w-full pt-3">
       {{ project.description }}
     </p>
     <ul class="flex flex-row gap-3 mt-2 flex-wrap">
@@ -48,9 +51,8 @@
               fill-rule="evenodd"
               clip-rule="evenodd"
             ></path>
-          </svg>
-        </div></a
-      >
+          </svg></div
+      ></a>
       <a
         *ngIf="project.demo"
         [href]="project.demo"
