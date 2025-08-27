@@ -1,12 +1,20 @@
+import { Component, OnInit } from '@angular/core';
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { FieldValue, Timestamp, serverTimestamp } from '@angular/fire/firestore';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { BlogService } from '../../../../service/blog/blog.service';
 
 @Component({
   selector: 'app-blog-editor',
   standalone: true,
-  imports: [EditorComponent, FormsModule],
+  imports: [EditorComponent, FormsModule, ReactiveFormsModule],
   providers: [
     {
       provide: TINYMCE_SCRIPT_SRC,
@@ -16,13 +24,27 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './blog-editor.component.html',
   styleUrl: './blog-editor.component.scss',
 })
-export class BlogEditorComponent {
-  blogContent = '';
+export class BlogEditorComponent implements OnInit {
+  blogForm!: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private blogService: BlogService,
+  ) {}
+
+  ngOnInit(): void {
+    this.blogForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(3)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      content: ['', [Validators.required, Validators.minLength(20)]],
+      tags: [''],
+    });
+  }
 
   editorConfig: EditorComponent['init'] = {
     height: 500,
     menubar: true,
-    plugins: 'licensekeymanager lists link image table code help wordcount preview fullscreen emoticons',
+    plugins: 'lists link image table code help wordcount preview fullscreen emoticons',
     toolbar:
       'undo redo | formatselect | bold italic underline | ' +
       'alignleft aligncenter alignright | bullist numlist outdent indent | ' +
@@ -35,19 +57,50 @@ export class BlogEditorComponent {
     images_upload_handler: async (blobInfo) => {
       const base64 = `data:${blobInfo.blob().type};base64,${blobInfo.base64()}`;
       return Promise.resolve(base64);
-      // const formData = new FormData();
-      // formData.append('file', blobInfo.blob(), blobInfo.filename());
-
-      // const response = await fetch('http://localhost:3000/api/upload', {
-      //   method: 'POST',
-      //   body: formData,
-      // });
-
-      // const result = await response.json();
-      // if (result?.location) {
-      //   return result.location; // must be a URL
-      // }
-      // throw new Error('Image upload failed');
     },
   };
+
+  async saveBlog() {
+    if (this.blogForm.valid) {
+      const formData = this.blogForm.value;
+
+      const newBlog = {
+        title: formData.title ?? '',
+        description: formData.description ?? '',
+        content: formData.content ?? '',
+        author: {
+          name: 'Phumlani Arendse',
+          email: 'aphumlani.dev@gmail.com',
+          profile_image: 'https://i.pravatar.cc/150?img=3',
+          social_links: {
+            linkedin: 'https://www.linkedin.com/in/phumlani-arendse/',
+            github: 'https://github.com/PhumlaniDev',
+          },
+        },
+        tags: formData.tags?.split(',').map((t: string) => ({ name: t.trim() })) || [],
+        created_at: serverTimestamp(),
+        updated_at: serverTimestamp(),
+        published_date: serverTimestamp(),
+        status: 'published',
+      };
+
+      this.blogService
+        .addBlog(newBlog)
+        .then(() => {
+          console.log('Blog saved successfully via BlogService!', newBlog);
+          this.blogForm.reset();
+        })
+        .catch((error) => {
+          console.error('Error saving blog via BlogService:', error);
+        });
+    }
+  }
+
+  private toDate(value: string | number | Date | Timestamp | null | undefined | FieldValue): Date {
+    if (!value) return new Date(0);
+    if (value instanceof Date) return value;
+    if (value instanceof Timestamp) return value.toDate();
+    if (typeof value === 'string' || typeof value === 'number') return new Date(value);
+    return new Date(0);
+  }
 }

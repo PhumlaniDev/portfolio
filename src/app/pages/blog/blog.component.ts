@@ -1,34 +1,54 @@
-import { BlogPost, BlogService } from '../../service/blog/blog.service';
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { FieldValue, Timestamp } from 'firebase/firestore';
 
+import { Blog } from '../../model/blog.model';
+import { BlogService } from '../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
 import { MarkdownModule } from 'ngx-markdown';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-blog',
+  standalone: true,
   imports: [CommonModule, RouterModule, MarkdownModule],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.scss',
 })
 export class BlogComponent implements OnInit {
-  posts: BlogPost[] = [];
-  selectedPost: BlogPost | null = null;
+  posts: Blog[] = [];
+  selectedPost: Blog | null = null;
 
-  constructor(private blogService: BlogService) {}
+  constructor(
+    private blogService: BlogService,
+    private sanitizer: DomSanitizer,
+  ) {}
 
   ngOnInit(): void {
-    this.blogService.getPosts().subscribe({
-      next: (data) => {
-        this.posts = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        this.selectedPost = this.posts[0];
-      },
-      error: (err) => console.error('Error fetching blog posts', err),
-      complete: () => console.log('Blog posts loaded successfully'),
+    this.blogService.getBlogs().subscribe((blogs) => {
+      this.posts = blogs
+        .filter((blog) => blog.status === 'published')
+        .sort((a, b) => {
+          const dateA = this.toDate(a.published_date).getTime();
+          const dateB = this.toDate(b.published_date).getTime();
+          return dateB - dateA;
+        });
     });
   }
 
-  selectPost(post: BlogPost) {
+  private toDate(value: string | number | Date | Timestamp | null | undefined | FieldValue): Date {
+    if (!value) return new Date(0);
+    if (value instanceof Date) return value;
+    if (value instanceof Timestamp) return value.toDate();
+    if (typeof value === 'string' || typeof value === 'number') return new Date(value);
+    return new Date(0);
+  }
+
+  selectPost(post: Blog) {
     this.selectedPost = post;
+  }
+
+  getSanitizedContent(content: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(content);
   }
 }

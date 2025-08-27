@@ -2,7 +2,7 @@
 
 [build]
   command = "npm run build"    # or: "ng build --configuration=production"
-  publish = "dist/portfolio"   # replace with your Angular output folder
+  publish = "dist/portfolio/browser"   # replace with your Angular output folder
 
 # ✅ SPA routing fix: redirect all routes to index.html
 [[redirects]]

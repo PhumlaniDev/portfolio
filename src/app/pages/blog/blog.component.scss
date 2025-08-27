@@ -1,0 +1,32 @@
+.blog-content {
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-bold mt-4 mb-2 text-gray-800;
+  }
+
+  p {
+    @apply mb-4 text-gray-700 leading-relaxed;
+  }
+
+  ul {
+    @apply list-disc pl-6 mb-4;
+  }
+
+  ol {
+    @apply list-decimal pl-6 mb-4;
+  }
+
+  li {
+    @apply mb-2;
+  }
+
+  pre {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm;
+  }
+
+  code {
+    @apply font-mono bg-gray-200 px-1 rounded;
+  }
+}

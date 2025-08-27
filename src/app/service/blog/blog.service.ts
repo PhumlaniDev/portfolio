@@ -1,20 +1,39 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {
+  Firestore,
+  addDoc,
+  collection,
+  collectionData,
+  doc,
+  docData,
+} from '@angular/fire/firestore';
+import { Injectable, inject } from '@angular/core';
 
-export interface BlogPost {
-  title: string;
-  file: string;
-  date: string;
-}
+import { Blog } from '../../model/blog.model';
+import { Observable } from 'rxjs';
+import { serverTimestamp } from 'firebase/firestore/lite';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BlogService {
-  constructor(private http: HttpClient) {}
+  private firestore: Firestore = inject(Firestore);
 
-  getPosts(): Observable<BlogPost[]> {
-    return this.http.get<BlogPost[]>('assets/posts/posts.json');
+  addBlog(blog: Omit<Blog, 'published_date' | 'created_at'>) {
+    const blogsRef = collection(this.firestore, 'blogs');
+    return addDoc(blogsRef, {
+      ...blog,
+      created_at: serverTimestamp(),
+      published_date: serverTimestamp(),
+    });
+  }
+
+  getBlogs(): Observable<Blog[]> {
+    const blogsRef = collection(this.firestore, 'blogs');
+    return collectionData(blogsRef, { idField: 'id' }) as Observable<Blog[]>;
+  }
+
+  getBlogById(id: string): Observable<Blog> {
+    const blogDocRef = doc(this.firestore, `blogs/${id}`);
+    return docData(blogDocRef, { idField: 'id' }) as Observable<Blog>;
   }
 }
