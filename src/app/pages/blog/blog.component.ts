@@ -6,6 +6,7 @@ import { BlogService } from '../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
 import { MarkdownModule } from 'ngx-markdown';
 import { RouterModule } from '@angular/router';
+import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-blog',
@@ -34,9 +35,10 @@ export class BlogComponent implements OnInit {
     });
   }
 
-  private toDate(value: any): Date {
+  private toDate(value: string | number | Date | Timestamp | null | undefined): Date {
     if (!value) return new Date(0);
-    if (value.toDate) return value.toDate();
+    if (value instanceof Date) return value;
+    if (value instanceof Timestamp) return value.toDate();
     if (typeof value === 'string' || typeof value === 'number') return new Date(value);
     return new Date(0);
   }

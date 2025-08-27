@@ -1,4 +1,4 @@
-import { FieldValue, Timestamp } from 'firebase/firestore';
+import { Timestamp } from 'firebase/firestore';
 
 export interface Author {
   name: string;
@@ -21,8 +21,8 @@ export interface Blog {
   content: string;
   author: Author;
   tags: Tag[];
-  created_at: FieldValue | Timestamp | string;
-  updated_at: FieldValue | Timestamp | string;
-  published_date: FieldValue | Timestamp | string;
+  created_at: string | number | Date | Timestamp | null;
+  updated_at: string | number | Date | Timestamp | null;
+  published_date: string | number | Date | Timestamp | null;
   status: string;
 }
