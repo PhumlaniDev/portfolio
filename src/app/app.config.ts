@@ -4,7 +4,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 import { ApplicationConfig } from '@angular/core';
-import { environment } from './environments/environment';
+import { environment } from '../environments/environment';
 import { provideHttpClient } from '@angular/common/http';
 import { provideMarkdown } from 'ngx-markdown';
 import { routes } from './app.routes';

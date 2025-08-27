@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^19.1.0",
     "@angular/router": "^19.1.0",
     "@tailwindcss/postcss": "^4.0.6",
+    "@tailwindcss/typography": "^0.5.16",
     "@tinymce/tinymce-angular": "^9.1.0",
     "firebase": "^11.2.0",
     "ngx-markdown": "^19.1.1",

@@ -11,23 +11,13 @@
 
   <div class="mb-4">
     <input
-      id="shortDescription"
-      formControlName="shortDescription"
+      id="description"
+      formControlName="description"
       type="text"
       class="w-full border border-gray-300 rounded-md p-2"
       placeholder="Enter short description"
     />
   </div>
-
-  <!-- <div class="mb-4">
-    <input
-      id="excerpt"
-      formControlName="excerpt"
-      type="text"
-      class="w-full border border-gray-300 rounded-md p-2"
-      placeholder="excerpt"
-    />
-  </div> -->
 
   <editor class="pt-10" [init]="editorConfig" formControlName="content"></editor>
 
@@ -52,5 +42,3 @@
   s
   <div [innerHTML]="blogContent"></div>
 </div> -->
-
-<div></div>
