@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
+import { FieldValue, Timestamp, serverTimestamp } from '@angular/fire/firestore';
 import {
   FormBuilder,
   FormGroup,
@@ -9,7 +10,6 @@ import {
 } from '@angular/forms';
 
 import { BlogService } from '../../../../service/blog/blog.service';
-import { serverTimestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-blog-editor',
@@ -93,30 +93,14 @@ export class BlogEditorComponent implements OnInit {
         .catch((error) => {
           console.error('Error saving blog via BlogService:', error);
         });
-
-      // const blogData = {
-      // ...this.blogForm.value,
-      // tags: this.blogForm.value.tags?.split(',').map((t: string, i: number) => ({
-      //   id: `t${i}`,
-      //   name: t.trim(),
-      //   slug: t.trim().toLowerCase().replace(/\s+/g, '-'),
-      // })),
-      // author: {
-      //   id: 'author1',
-      //   name: 'Phumlani Arendse',
-      //   email: 'aphumlani.dev@gmail.com',
-      //   profile_image: 'https://i.pravatar.cc/150?img=3',
-      //   social_links: {
-      //     linkedin: 'https://www.linkedin.com/in/phumlani-arendse/',
-      //     github: 'https://github.com/PhumlaniDev',
-      //   },
-      // },
-      // created_at: serverTimestamp(),
-      // updated_at: serverTimestamp(),
     }
+  }
 
-    // const blogsRef = collection(this.firestore, 'blogs');
-    // await addDoc(blogsRef, blogData);
-    // console.log('Blog saved successfully!', blogData);
+  private toDate(value: string | number | Date | Timestamp | null | undefined | FieldValue): Date {
+    if (!value) return new Date(0);
+    if (value instanceof Date) return value;
+    if (value instanceof Timestamp) return value.toDate();
+    if (typeof value === 'string' || typeof value === 'number') return new Date(value);
+    return new Date(0);
   }
 }

@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { FieldValue, Timestamp } from 'firebase/firestore';
 
 import { Blog } from '../../model/blog.model';
 import { BlogService } from '../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
 import { MarkdownModule } from 'ngx-markdown';
 import { RouterModule } from '@angular/router';
-import { Timestamp } from 'firebase/firestore';
 
 @Component({
   selector: 'app-blog',
+  standalone: true,
   imports: [CommonModule, RouterModule, MarkdownModule],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.scss',
@@ -35,7 +36,7 @@ export class BlogComponent implements OnInit {
     });
   }
 
-  private toDate(value: string | number | Date | Timestamp | null | undefined): Date {
+  private toDate(value: string | number | Date | Timestamp | null | undefined | FieldValue): Date {
     if (!value) return new Date(0);
     if (value instanceof Date) return value;
     if (value instanceof Timestamp) return value.toDate();

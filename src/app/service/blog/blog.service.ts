@@ -6,40 +6,34 @@ import {
   doc,
   docData,
 } from '@angular/fire/firestore';
-import { Injectable, Injector, inject, runInInjectionContext } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { Blog } from '../../model/blog.model';
 import { Observable } from 'rxjs';
+import { serverTimestamp } from 'firebase/firestore/lite';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BlogService {
-  // private firestore: Firestore = inject(Firestore);
+  private firestore: Firestore = inject(Firestore);
 
-  constructor(private injector: Injector) {}
-
-  addBlog(blog: Blog) {
-    return runInInjectionContext(this.injector, () => {
-      const firestore = inject(Firestore);
-      const blogsRef = collection(firestore, 'blogs');
-      return addDoc(blogsRef, blog);
+  addBlog(blog: Omit<Blog, 'published_date' | 'created_at'>) {
+    const blogsRef = collection(this.firestore, 'blogs');
+    return addDoc(blogsRef, {
+      ...blog,
+      created_at: serverTimestamp(),
+      published_date: serverTimestamp(),
     });
   }
 
   getBlogs(): Observable<Blog[]> {
-    return runInInjectionContext(this.injector, () => {
-      const firestore = inject(Firestore);
-      const blogsRef = collection(firestore, 'blogs');
-      return collectionData(blogsRef, { idField: 'id' }) as Observable<Blog[]>;
-    });
+    const blogsRef = collection(this.firestore, 'blogs');
+    return collectionData(blogsRef, { idField: 'id' }) as Observable<Blog[]>;
   }
 
   getBlogById(id: string): Observable<Blog> {
-    return runInInjectionContext(this.injector, () => {
-      const firestore = inject(Firestore);
-      const blogDocRef = doc(firestore, `blogs/${id}`);
-      return docData(blogDocRef, { idField: 'id' }) as Observable<Blog>;
-    });
+    const blogDocRef = doc(this.firestore, `blogs/${id}`);
+    return docData(blogDocRef, { idField: 'id' }) as Observable<Blog>;
   }
 }
