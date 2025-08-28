@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   </head>
   <body>
-    <app-root></app-root>
+    <app-root>
+      <form name="contact" netlify netlify-honeypot="bot-field" hidden>
+        <input type="text" name="name" />
+        <input type="email" name="email" />
+        <input type="text" name="subject" />
+        <textarea name="message"></textarea>
+      </form>
+    </app-root>
   </body>
 </html>
