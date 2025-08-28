@@ -11,7 +11,6 @@ import { Injectable, inject } from '@angular/core';
 
 import { Blog } from '../../model/blog.model';
 import { Observable } from 'rxjs';
-import { serverTimestamp } from 'firebase/firestore/lite';
 
 @Injectable({
   providedIn: 'root',

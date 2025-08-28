@@ -1,11 +1,4 @@
-import {
-  Firestore,
-  addDoc,
-  collection,
-  collectionData,
-  doc,
-  docData,
-} from '@angular/fire/firestore';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Injectable, inject } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
