@@ -5,6 +5,7 @@ import { FieldValue, Timestamp } from 'firebase/firestore';
 import { Blog } from '../../model/blog.model';
 import { BlogService } from '../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
+import { LoadingService } from '../../service/spinner/loading.service';
 import { MarkdownModule } from 'ngx-markdown';
 import { RouterModule } from '@angular/router';
 
@@ -22,18 +23,23 @@ export class BlogComponent implements OnInit {
   constructor(
     private blogService: BlogService,
     private sanitizer: DomSanitizer,
+    private loading: LoadingService,
   ) {}
 
   ngOnInit(): void {
-    this.blogService.getBlogs().subscribe((blogs) => {
-      this.posts = blogs
-        .filter((blog) => blog.status === 'published')
-        .sort((a, b) => {
-          const dateA = this.toDate(a.published_date).getTime();
-          const dateB = this.toDate(b.published_date).getTime();
-          return dateB - dateA;
-        });
-    });
+    this.loading.show('Fetching blogs...');
+    setTimeout(() => {
+      this.loading.hide();
+      this.blogService.getBlogs().subscribe((blogs) => {
+        this.posts = blogs
+          .filter((blog) => blog.status === 'published')
+          .sort((a, b) => {
+            const dateA = this.toDate(a.published_date).getTime();
+            const dateB = this.toDate(b.published_date).getTime();
+            return dateB - dateA;
+          });
+      });
+    }, 1500);
   }
 
   private toDate(value: string | number | Date | Timestamp | null | undefined | FieldValue): Date {

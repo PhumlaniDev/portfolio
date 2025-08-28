@@ -1,6 +1,6 @@
 export interface Project {
   name: string;
-  backgroundImage: string;
+  image?: string;
   shortDescription: string;
   description: string;
   tags: string[];

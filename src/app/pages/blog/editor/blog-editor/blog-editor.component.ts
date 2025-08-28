@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
-import { FieldValue, Timestamp, serverTimestamp } from '@angular/fire/firestore';
 import {
   FormBuilder,
   FormGroup,
@@ -10,11 +9,14 @@ import {
 } from '@angular/forms';
 
 import { BlogService } from '../../../../service/blog/blog.service';
+import { CommonModule } from '@angular/common';
+import { LoadingService } from '../../../../service/spinner/loading.service';
+import { serverTimestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-blog-editor',
   standalone: true,
-  imports: [EditorComponent, FormsModule, ReactiveFormsModule],
+  imports: [EditorComponent, FormsModule, ReactiveFormsModule, CommonModule],
   providers: [
     {
       provide: TINYMCE_SCRIPT_SRC,
@@ -30,6 +32,7 @@ export class BlogEditorComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private blogService: BlogService,
+    private loading: LoadingService,
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +66,7 @@ export class BlogEditorComponent implements OnInit {
   async saveBlog() {
     if (this.blogForm.valid) {
       const formData = this.blogForm.value;
+      this.loading.show('Saving blog...');
 
       const newBlog = {
         title: formData.title ?? '',
@@ -84,23 +88,20 @@ export class BlogEditorComponent implements OnInit {
         status: 'published',
       };
 
-      this.blogService
-        .addBlog(newBlog)
-        .then(() => {
-          console.log('Blog saved successfully via BlogService!', newBlog);
-          this.blogForm.reset();
-        })
-        .catch((error) => {
-          console.error('Error saving blog via BlogService:', error);
-        });
+      setTimeout(() => {
+        this.loading.hide();
+        this.blogService
+          .addBlog(newBlog)
+          .then(() => {
+            console.log('Blog saved successfully via BlogService!', newBlog);
+            this.blogForm.reset();
+          })
+          .catch((error) => {
+            console.error('Error saving blog via BlogService:', error);
+          });
+      }, 3000);
+    } else {
+      this.blogForm.markAllAsTouched();
     }
-  }
-
-  private toDate(value: string | number | Date | Timestamp | null | undefined | FieldValue): Date {
-    if (!value) return new Date(0);
-    if (value instanceof Date) return value;
-    if (value instanceof Timestamp) return value.toDate();
-    if (typeof value === 'string' || typeof value === 'number') return new Date(value);
-    return new Date(0);
   }
 }

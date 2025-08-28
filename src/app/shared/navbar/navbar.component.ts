@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 
 import { CommonModule } from '@angular/common';
-import { ThemeService } from '../../service/theme.service';
+import { ThemeService } from '../../service/themes/theme.service';
 
 @Component({
   selector: 'app-navbar',

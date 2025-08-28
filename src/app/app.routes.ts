@@ -3,6 +3,7 @@ import { BlogComponent } from './pages/blog/blog.component';
 import { BlogDetailComponent } from './pages/blog/blog-detail/blog-detail.component';
 import { BlogEditorComponent } from './pages/blog/editor/blog-editor/blog-editor.component';
 import { ContactsComponent } from './pages/contacts/contacts.component';
+import { LoginComponent } from './pages/login/login.component';
 import { ProjectsComponent } from './pages/projects/projects.component';
 import { Routes } from '@angular/router';
 import { adminGuard } from './auth/admin.guard';
@@ -17,6 +18,6 @@ export const routes: Routes = [
   { path: 'projects', component: ProjectsComponent },
   {
     path: 'login',
-    loadComponent: () => import('./pages/login/login.component').then((m) => m.LoginComponent),
+    component: LoginComponent,
   },
 ];

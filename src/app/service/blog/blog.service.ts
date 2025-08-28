@@ -1,5 +1,6 @@
 import {
   Firestore,
+  Timestamp,
   addDoc,
   collection,
   collectionData,
@@ -18,12 +19,13 @@ import { serverTimestamp } from 'firebase/firestore/lite';
 export class BlogService {
   private firestore: Firestore = inject(Firestore);
 
-  addBlog(blog: Omit<Blog, 'published_date' | 'created_at'>) {
+  addBlog(blog: Omit<Blog, 'published_date' | 'created_at' | 'updated_at'>) {
     const blogsRef = collection(this.firestore, 'blogs');
     return addDoc(blogsRef, {
       ...blog,
-      created_at: serverTimestamp(),
-      published_date: serverTimestamp(),
+      created_at: Timestamp.now(),
+      updated_at: Timestamp.now(),
+      published_date: Timestamp.now(),
     });
   }
 

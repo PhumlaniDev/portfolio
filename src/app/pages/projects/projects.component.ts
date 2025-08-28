@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { Project } from '../../model/project.model';
-import { ProjectService } from '../../service/project.service';
+import { ProjectService } from '../../service/project/project.service';
 
 @Component({
   selector: 'app-projects',
@@ -17,9 +17,8 @@ export class ProjectsComponent implements OnInit {
   constructor(private readonly projectService: ProjectService) {}
 
   ngOnInit(): void {
-    this.projectService.getProjects().subscribe((data) => {
-      this.projects = data.projects;
-      console.log(this.projects);
+    this.projectService.getProjects().subscribe((projects) => {
+      this.projects = projects;
     });
   }
 }
