@@ -1,6 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'tailwindcss';
+@import 'prismjs/themes/prism.css';
 
 main {
   overflow-x: hidden;
+}
+
+.prose {
+  ul,
+  ol {
+    list-style: disc; /* Ensure bullet points for unordered lists */
+    margin: 1em 0;
+    padding-left: 2em;
+  }
+  ol {
+    list-style: decimal; /* Ensure numbered lists */
+  }
+  li {
+    margin-bottom: 0.5em;
+  }
+  pre {
+    background-color: #f4f4f4; /* Match code block background */
+    padding: 1em;
+    border-radius: 0.5em;
+    overflow-x: auto;
+  }
+  code {
+    font-family: monospace;
+    background-color: #f4f4f4;
+    padding: 0.2em 0.4em;
+    border-radius: 0.3em;
+  }
+  /* Restore TinyMCE-like inline code styles */
+  code:not(pre code) {
+    background-color: #fee2e2; /* Fallback for text-rust */
+    color: #b7410e; /* Fallback for bg-sunset/10 */
+  }
 }

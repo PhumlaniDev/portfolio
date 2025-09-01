@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { FieldValue, Timestamp } from 'firebase/firestore';
 
@@ -7,6 +7,7 @@ import { BlogService } from '../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
 import { LoadingService } from '../../service/spinner/loading.service';
 import { MarkdownModule } from 'ngx-markdown';
+import Prism from 'prismjs';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -16,7 +17,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.scss',
 })
-export class BlogComponent implements OnInit {
+export class BlogComponent implements OnInit, AfterViewChecked {
   posts: Blog[] = [];
   selectedPost: Blog | null = null;
 
@@ -25,6 +26,12 @@ export class BlogComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private loading: LoadingService,
   ) {}
+
+  ngAfterViewChecked(): void {
+    const markdownElement = document.querySelector('.prose');
+    console.log('Markdown Element:', markdownElement?.innerHTML);
+    Prism.highlightAll();
+  }
 
   ngOnInit(): void {
     this.loading.show('Fetching blogs...');
@@ -52,9 +59,5 @@ export class BlogComponent implements OnInit {
 
   selectPost(post: Blog) {
     this.selectedPost = post;
-  }
-
-  getSanitizedContent(content: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(content);
   }
 }

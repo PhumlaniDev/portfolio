@@ -29,7 +29,7 @@
               "src/_redirects",
               { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" }
             ],
-            "styles": ["src/styles.scss"],
+            "styles": ["src/styles.scss", "node_modules/prismjs/themes/prism.css"],
             "scripts": []
           },
           "configurations": {

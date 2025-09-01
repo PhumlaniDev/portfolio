@@ -28,13 +28,7 @@
         {{ selectedPost.title }}
       </h1>
       <h2 class="text-1xl font-bold mb-5">{{ selectedPost.description }}</h2>
-      <article class="blog-content prose prose-lg max-w-none">
-        <!-- <markdown [data]="selectedPost.content"></markdown> -->
-        <div
-          class="prose prose-lg max-w-none"
-          [innerHTML]="getSanitizedContent(selectedPost.content)"
-        ></div>
-      </article>
+      <markdown class="prose prose-lg max-w-none" [data]="selectedPost.content" prism></markdown>
     </ng-container>
 
     <ng-template #noPost>
