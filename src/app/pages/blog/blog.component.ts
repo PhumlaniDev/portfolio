@@ -1,10 +1,10 @@
 import { AfterViewChecked, Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { FieldValue, Timestamp } from 'firebase/firestore';
 
 import { Blog } from '../../model/blog.model';
 import { BlogService } from '../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
 import { LoadingService } from '../../service/spinner/loading.service';
 import { MarkdownModule } from 'ngx-markdown';
 import Prism from 'prismjs';
