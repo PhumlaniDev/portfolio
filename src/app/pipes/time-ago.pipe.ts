@@ -1,20 +1,25 @@
 import { ChangeDetectorRef, NgZone, Pipe, PipeTransform } from '@angular/core';
 
+interface FirestoreTimestamp {
+  seconds: number;
+  nanoseconds: number;
+}
+
 @Pipe({
   name: 'timeAgo',
   pure: false,
 })
 export class TimeAgoPipe implements PipeTransform {
-  private lastValue: any;
-  private lastText: string = '';
-  private timer: any;
+  private lastValue?: Date | FirestoreTimestamp | string | number;
+  private lastText = '';
+  private timer?: ReturnType<typeof setTimeout>;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
     private ngZone: NgZone,
   ) {}
 
-  transform(value: any): string {
+  transform(value: Date | FirestoreTimestamp | string | number): string {
     if (!value) return '';
 
     if (this.lastValue !== value) {
@@ -27,8 +32,13 @@ export class TimeAgoPipe implements PipeTransform {
     return this.lastText;
   }
 
-  format(value: any): string {
-    let date = value.seconds ? new Date(value.seconds * 1000) : new Date(value);
+  format(value: Date | FirestoreTimestamp | string | number): string {
+    // const date = value.seconds ? new Date(value.seconds * 1000) : new Date(value);
+    const date: Date =
+      typeof value === 'object' && 'seconds' in value
+        ? new Date(value.seconds * 1000)
+        : new Date(value);
+
     const now = new Date();
     const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
@@ -50,7 +60,7 @@ export class TimeAgoPipe implements PipeTransform {
   createTimer() {
     if (this.timer) {
       clearTimeout(this.timer);
-      this.timer = null;
+      this.timer = undefined;
     }
   }
 
