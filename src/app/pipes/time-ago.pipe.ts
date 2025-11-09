@@ -19,7 +19,7 @@ export class TimeAgoPipe implements PipeTransform {
     private ngZone: NgZone,
   ) {}
 
-  transform(value: Date | FirestoreTimestamp | string | number): string {
+  transform(value: Date | FirestoreTimestamp | string | number | null): string {
     if (!value) return '';
 
     if (this.lastValue !== value) {
