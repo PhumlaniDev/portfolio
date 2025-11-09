@@ -35,7 +35,7 @@ turndownService.addRule('codeBlocks', {
     const language =
       codeNode && typeof codeNode.className === 'string'
         ? codeNode.className.replace('language-', '')
-        : '';
+        : 'typescript';
     return `\n\`\`\`${language}\n${content.trim()}\n\`\`\`\n`;
   },
 });

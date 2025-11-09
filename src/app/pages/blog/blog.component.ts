@@ -1,19 +1,21 @@
+import 'prismjs/plugins/autoloader/prism-autoloader';
+
 import { AfterViewChecked, Component, OnInit } from '@angular/core';
 import { FieldValue, Timestamp } from 'firebase/firestore';
 
 import { Blog } from '../../model/blog.model';
 import { BlogService } from '../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
 import { LoadingService } from '../../service/spinner/loading.service';
 import { MarkdownModule } from 'ngx-markdown';
 import Prism from 'prismjs';
 import { RouterModule } from '@angular/router';
+import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 
 @Component({
   selector: 'app-blog',
   standalone: true,
-  imports: [CommonModule, RouterModule, MarkdownModule],
+  imports: [CommonModule, RouterModule, MarkdownModule, TimeAgoPipe],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.scss',
 })
@@ -23,7 +25,6 @@ export class BlogComponent implements OnInit, AfterViewChecked {
 
   constructor(
     private blogService: BlogService,
-    private sanitizer: DomSanitizer,
     private loading: LoadingService,
   ) {}
 
@@ -34,6 +35,10 @@ export class BlogComponent implements OnInit, AfterViewChecked {
   }
 
   ngOnInit(): void {
+    if (Prism.plugins['autoloader']) {
+      Prism.plugins['autoloader'].languages_path = 'assets/prism/';
+    }
+
     this.loading.show('Fetching blogs...');
     setTimeout(() => {
       this.loading.hide();

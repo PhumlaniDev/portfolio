@@ -22,6 +22,7 @@ export class ThemeService {
   }
 
   private applyTheme(theme: string): void {
+    console.log(`Applying theme: ${theme}`);
     const html = document.documentElement;
     if (theme === 'dark') {
       html.classList.add('dark');
