@@ -1,77 +1,106 @@
-<h1 class="text-3xl sm:text-4xl font-bold pt-5 mb-4 text-center md:text-left">All Projects 📂</h1>
-
-<p class="pt-2 text-base sm:text-lg md:text-xl text-center md:text-left max-w-3xl">
-  Full-stack and DevOps projects — from Spring Boot microservices to Angular frontend and CI/CD
-  pipelines. You can find more details and source code on my GitHub.
-</p>
-
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 w-full mb-10">
-  <div
-    *ngFor="let project of projects"
-    class="border border-gray-200 dark:border-none shadow-lg rounded-xl overflow-hidden bg-white hover:shadow-xl transition duration-300"
+<section class="max-w-7xl mx-auto px-6 pt-10 pb-4">
+  <h1
+    class="text-3xl sm:text-4xl font-bold mb-4 text-center md:text-left text-slate-900 dark:text-slate-100"
   >
-    <!-- Image -->
-    <div *ngIf="project.image?.length" class="h-48 w-full overflow-hidden">
-      <img
-        [src]="project.image"
-        alt="project"
-        class="w-full h-full object-cover hover:scale-105 transition duration-500"
-      />
-    </div>
+    All Projects 📂
+  </h1>
 
-    <!-- Card Content -->
-    <div class="px-5 py-6">
-      <h3 class="text-xl sm:text-2xl font-bold text-black dark:text-white">{{ project.name }}</h3>
-      <h4 class="line-clamp-3 text-gray-600 text-sm sm:text-base pt-3">
-        {{ project.shortDescription }}
-      </h4>
-      <p class="line-clamp-3 text-gray-500 text-sm sm:text-base pt-3">
-        {{ project.description }}
-      </p>
+  <p
+    class="text-base sm:text-lg md:text-xl text-center md:text-left max-w-3xl text-slate-500 dark:text-slate-400"
+  >
+    Full-stack and DevOps projects — from Spring Boot microservices to Angular frontend and CI/CD
+    pipelines. You can find more details and source code on my GitHub.
+  </p>
+</section>
 
-      <!-- Tags -->
-      <ul class="flex flex-wrap gap-2 mt-3">
-        <li
-          *ngFor="let tag of project.tags"
-          class="text-xs sm:text-sm bg-blue-100 text-blue-600 px-2 py-1 rounded-md"
-        >
-          {{ tag }}
-        </li>
-      </ul>
+<section class="max-w-6xl mx-auto my-auto px-6">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mt-6">
+    <div
+      *ngFor="let project of projects"
+      class="group flex flex-col w-full rounded-2xl overflow-hidden border border-slate-200/60 dark:border-slate-700/50 bg-white/70 dark:bg-slate-800/60 backdrop-blur-md shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 ease-in-out"
+    >
+      <!-- Image (only if available) -->
+      <div *ngIf="project.image?.length" class="h-44 w-full overflow-hidden">
+        <img
+          [src]="project.image"
+          alt="{{ project.name }}"
+          class="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-in-out"
+        />
+      </div>
 
-      <!-- Links -->
-      <div class="mt-4 flex items-center justify-between">
-        <a
-          *ngIf="project.github"
-          [href]="project.github"
-          target="_blank"
-          class="flex items-center gap-2 text-gray-700 hover:text-green-500 transition"
-        >
-          <!-- GitHub Icon -->
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 15 15"
-            fill="currentColor"
-            xmlns="http://www.w3.org/2000/svg"
+      <!-- Accent bar (shows when no image) -->
+      <div
+        *ngIf="!project.image?.length"
+        class="h-1.5 w-full bg-gradient-to-r from-[#46C47C] to-[#34A866]"
+      ></div>
+      <!-- Accent bar (shows when no image) -->
+      <div
+        *ngIf="!project.image?.length"
+        class="h-1.5 w-full bg-gradient-to-r from-[#46C47C] to-[#34A866]"
+      ></div>
+
+      <!-- Card Body -->
+      <div class="flex flex-col flex-1 px-5 py-5 gap-3">
+        <!-- Title -->
+        <h3 class="text-lg sm:text-xl font-bold leading-snug text-slate-900 dark:text-slate-100">
+          {{ project.name }}
+        </h3>
+
+        <!-- Short description -->
+        <h4 class="text-sm font-medium line-clamp-2 text-slate-600 dark:text-slate-300">
+          {{ project.shortDescription }}
+        </h4>
+
+        <!-- Long description -->
+        <p class="text-sm line-clamp-3 text-slate-500 dark:text-slate-400 flex-1">
+          {{ project.description }}
+        </p>
+
+        <!-- Ta<gs -->
+        <ul class="flex flex-wrap gap-2 mt-1">
+          <li
+            *ngFor="let tag of project.tags"
+            class="text-xs font-medium px-2.5 py-1 rounded-full bg-[#46C47C]/10 text-[#2E9E5E] dark:bg-[#46C47C]/20 dark:text-[#5DD68E] border border-[#46C47C]/20 dark:border-[#46C47C]/30"
           >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M7.5.25C3.5.25.25 3.5.25 7.5c0 3.2 2.1 5.9 5 6.9.4.1.6-.2.6-.5v-1.1c-2 .5-2.4-.8-2.4-.8-.3-.8-.8-1-1.2-1 .9 0 1.4.6 1.6 1 .8 1.3 2.2.9 2.7.7.1-.6.4-1 .7-1.2-1.8-.2-3.7-.9-3.7-4 0-.9.3-1.6.8-2.1-.1-.2-.3-.8.1-1.7 0 0 .6-.2 1.8.7.5-.1 1-.2 1.6-.2s1.1.1 1.6.2c1.2-.9 1.8-.7 1.8-.7.4.9.2 1.5.1 1.7.5.6.8 1.3.8 2.1 0 3.1-1.9 3.8-3.7 4 .4.3.7.9.7 1.8v1.3c0 .3.2.6.6.5 2.9-1 5-3.7 5-6.9 0-4-3.3-7.25-7.5-7.25z"
-            />
-          </svg>
-          <span class="hidden sm:inline">GitHub</span>
-        </a>
-
-        <a
-          *ngIf="project.demo"
-          [href]="project.demo"
-          target="_blank"
-          class="text-green-600 hover:underline text-sm sm:text-base font-medium"
-          >Live Demo</a
+            {{ tag }}
+          </li>
+        </ul>
+        <!-- Links -->
+        <div
+          class="mt-auto pt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-700/60"
         >
+          <a
+            *ngIf="project.github"
+            [href]="project.github"
+            target="_blank"
+            class="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-[#46C47C] dark:hover:text-[#5DD68E] transition-colors duration-200"
+          >
+            <!-- GitHub Icon -->
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 15 15"
+              fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M7.5.25C3.5.25.25 3.5.25 7.5c0 3.2 2.1 5.9 5 6.9.4.1.6-.2.6-.5v-1.1c-2 .5-2.4-.8-2.4-.8-.3-.8-.8-1-1.2-1 .9 0 1.4.6 1.6 1 .8 1.3 2.2.9 2.7.7.1-.6.4-1 .7-1.2-1.8-.2-3.7-.9-3.7-4 0-.9.3-1.6.8-2.1-.1-.2-.3-.8.1-1.7 0 0 .6-.2 1.8.7.5-.1 1-.2 1.6-.2s1.1.1 1.6.2c1.2-.9 1.8-.7 1.8-.7.4.9.2 1.5.1 1.7.5.6.8 1.3.8 2.1 0 3.1-1.9 3.8-3.7 4 .4.3.7.9.7 1.8v1.3c0 .3.2.6.6.5 2.9-1 5-3.7 5-6.9 0-4-3.3-7.25-7.5-7.25z"
+              />
+            </svg>
+            <span class="hidden sm:inline">GitHub</span>
+          </a>
+          <a
+            *ngIf="project.demo"
+            [href]="project.demo"
+            target="_blank"
+            class="text-sm font-semibold px-3 py-1.5 rounded-lg bg-[#46C47C]/10 text-[#2E9E5E] dark:bg-[#46C47C]/20 dark:text-[#5DD68E] hover:bg-[#46C47C] hover:text-white dark:hover:bg-[#46C47C] dark:hover:text-white transition-all duration-200"
+          >
+            Live Demo ↗
+          </a>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</section>

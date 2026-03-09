@@ -1,8 +1,13 @@
 export default {
   darkMode: 'class', // Enables class-based dark mode
-  content: ['./src/**/*.{html,ts,scss}'],
+  content: ['./src/**/*.{html,ts,css}'],
   theme: {
     extend: {},
   },
-  plugins: { tailwindcss: {}, autoprefixer: {} },
+  plugins: [],
+  variants: {
+    extend: {
+      dark: ['.dark', '.dark *'],
+    },
+  },
 };
