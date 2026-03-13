@@ -51,3 +51,6 @@ Thumbs.db
 .husky/_/
 
 .angular/cache/
+
+src/environments/environment.prod.ts
+src/environments/environment.ts

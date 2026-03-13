@@ -29,7 +29,10 @@
               "src/_redirects",
               { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" }
             ],
-            "styles": ["src/styles.scss", "node_modules/prismjs/themes/prism.css"],
+            "styles": [
+              "src/styles.scss",
+              "node_modules/prism-themes/themes/prism-vsc-dark-plus.css"
+            ],
             "scripts": ["node_modules/prismjs/prism.js"]
           },
           "configurations": {

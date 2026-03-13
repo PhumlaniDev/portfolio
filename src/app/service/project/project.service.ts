@@ -1,7 +1,6 @@
 import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Injectable, inject } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Project } from '../../model/project.model';
 
@@ -9,10 +8,7 @@ import { Project } from '../../model/project.model';
   providedIn: 'root',
 })
 export class ProjectService {
-  private readonly jsonUrl = 'assets/constants/projects.json';
   private firestore: Firestore = inject(Firestore);
-
-  constructor(private readonly http: HttpClient) {}
 
   getProjects(): Observable<Project[]> {
     const projectRef = collection(this.firestore, 'projects');

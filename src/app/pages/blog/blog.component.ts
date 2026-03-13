@@ -1,6 +1,17 @@
 import 'prismjs/plugins/autoloader/prism-autoloader';
+import 'prismjs';
+import 'prismjs/components/prism-markup'; // HTML/XML
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-sql';
+import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-yaml';
 
-import { AfterViewChecked, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FieldValue, Timestamp } from 'firebase/firestore';
 
 import { Blog } from '../../model/blog.model';
@@ -22,27 +33,30 @@ import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 export class BlogComponent implements OnInit, AfterViewChecked {
   posts: Blog[] = [];
   selectedPost: Blog | null = null;
+  lastPostId: string | null = null;
 
   constructor(
     private blogService: BlogService,
     private loading: LoadingService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   ngAfterViewChecked(): void {
-    const markdownElement = document.querySelector('.prose');
-    console.log('Markdown Element:', markdownElement?.innerHTML);
-    Prism.highlightAll();
+    if (this.selectedPost?.id !== this.lastPostId) {
+      this.lastPostId = this.selectedPost?.id ?? null;
+      Prism.highlightAll();
+      this.changeDetectorRef.detectChanges();
+    }
   }
 
   ngOnInit(): void {
     if (Prism.plugins['autoloader']) {
-      Prism.plugins['autoloader'].languages_path = 'assets/prism/';
+      Prism.plugins['autoloader'].languages_path = '/assets/prismjs/components/';
     }
 
     this.loading.show('Fetching blogs...');
-    setTimeout(() => {
-      this.loading.hide();
-      this.blogService.getBlogs().subscribe((blogs) => {
+    this.blogService.getBlogs().subscribe({
+      next: (blogs) => {
         this.posts = blogs
           .filter((blog) => blog.status === 'published')
           .sort((a, b) => {
@@ -50,8 +64,26 @@ export class BlogComponent implements OnInit, AfterViewChecked {
             const dateB = this.toDate(b.published_date).getTime();
             return dateB - dateA;
           });
-      });
-    }, 1500);
+        this.loading.hide();
+      },
+      error: (err) => {
+        console.error('Error fetching blogs:', err);
+        this.loading.hide();
+      },
+    });
+
+    // setTimeout(() => {
+    //   this.loading.hide();
+    //   this.blogService.getBlogs().subscribe((blogs) => {
+    //     this.posts = blogs
+    //       .filter((blog) => blog.status === 'published')
+    //       .sort((a, b) => {
+    //         const dateA = this.toDate(a.published_date).getTime();
+    //         const dateB = this.toDate(b.published_date).getTime();
+    //         return dateB - dateA;
+    //       });
+    //   });
+    // }, 1500);
   }
 
   private toDate(value: string | number | Date | Timestamp | null | undefined | FieldValue): Date {

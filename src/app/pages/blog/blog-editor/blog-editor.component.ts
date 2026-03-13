@@ -11,7 +11,6 @@ import {
 import { BlogService } from '../../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
 import { LoadingService } from '../../../service/spinner/loading.service';
-import { serverTimestamp } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-blog-editor',
@@ -45,6 +44,19 @@ export class BlogEditorComponent implements OnInit {
   }
 
   editorConfig: EditorComponent['init'] = {
+    base_url: '/tinymce',
+    suffix: '.min',
+    content_style: `
+    body { font-family: Georgia, serif; font-size: 16px; }
+    pre[class*="language-"] {
+      background: #1e1e1e;
+      border-radius: 6px;
+      padding: 1rem;
+      font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+      font-size: 14px;
+    }
+    code { font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace; }
+  `,
     height: 500,
     menubar: true,
     plugins: 'lists link image table codesample help wordcount preview fullscreen emoticons',
@@ -57,6 +69,7 @@ export class BlogEditorComponent implements OnInit {
     skin: 'oxide-dark',
     content_css: 'dark',
     automatic_uploads: true,
+    codesample_global_prismjs: true,
     codesample_languages: [
       { text: 'HTML/XML', value: 'markup' },
       { text: 'JavaScript', value: 'javascript' },
@@ -105,24 +118,21 @@ export class BlogEditorComponent implements OnInit {
           },
         },
         tags: formData.tags?.split(',').map((t: string) => ({ name: t.trim() })) || [],
-        created_at: serverTimestamp(),
-        updated_at: serverTimestamp(),
-        published_date: serverTimestamp(),
+        // created_at: serverTimestamp(),
+        // updated_at: serverTimestamp(),
+        // published_date: serverTimestamp(),
         status: 'published',
       };
 
-      setTimeout(() => {
+      try {
+        await this.blogService.addBlog(newBlog);
+        console.log('Blog saved successfully via BlogService!');
+        this.blogForm.reset();
+      } catch (error) {
+        console.error('Error saving blog via BlogService:', error);
+      } finally {
         this.loading.hide();
-        this.blogService
-          .addBlog(newBlog)
-          .then(() => {
-            console.log('Blog saved successfully via BlogService!', newBlog);
-            this.blogForm.reset();
-          })
-          .catch((error) => {
-            console.error('Error saving blog via BlogService:', error);
-          });
-      }, 3000);
+      }
     } else {
       this.blogForm.markAllAsTouched();
     }

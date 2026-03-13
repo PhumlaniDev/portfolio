@@ -28,3 +28,54 @@
 //     padding-left: 1.5rem; /* Tailwind pl-6 */
 //   }
 // }
+
+:host ::ng-deep {
+  .prose pre[class*='language-'],
+  .prose code[class*='language-'] {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    color: inherit !important;
+    font-size: 0.9rem;
+    font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+  }
+
+  pre[class*='language-'] {
+    border-radius: 0.5rem;
+    padding: 1.25rem !important;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  // Ensure Prism token colors are never overridden
+  .token.keyword {
+    color: #569cd6 !important;
+  } // blue — like VSCode
+  .token.string {
+    color: #ce9178 !important;
+  } // orange-brown
+  .token.comment {
+    color: #6a9955 !important;
+  } // green
+  .token.function {
+    color: #dcdcaa !important;
+  } // yellow
+  .token.number {
+    color: #b5cea8 !important;
+  } // light green
+  .token.operator {
+    color: #d4d4d4 !important;
+  } // white
+  .token.class-name {
+    color: #4ec9b0 !important;
+  } // teal
+  .token.punctuation {
+    color: #d4d4d4 !important;
+  }
+  .token.parameter {
+    color: #9cdcfe !important;
+  } // light blue
+  .token.builtin {
+    color: #4ec9b0 !important;
+  }
+}
