@@ -1,7 +1,7 @@
 # netlify.toml (place in project root, next to package.json)
 
 [build]
-  command = "npm run build"    # or: "ng build --configuration=production"
+  command = "npm run generate-env && npm run build"
   publish = "dist/portfolio/browser"   # replace with your Angular output folder
 
 # ✅ SPA routing fix: redirect all routes to index.html
