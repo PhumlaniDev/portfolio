@@ -94,7 +94,7 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download build artifact # ← use the built dist/
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8.0.1
         with:
           name: dist
           path: dist/portfolio/
