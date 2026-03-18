@@ -17,7 +17,7 @@ if (missing.length) {
   process.exit(1);
 }
 
-const environment = `export const environment = {
+const content = `export const environment = {
   production: true,
   firebase: {
     apiKey: '${process.env.FIREBASE_API_KEY}',
@@ -31,6 +31,7 @@ const environment = `export const environment = {
 };
 `;
 
-fs.writeFileSync('./src/environments/environment.prod.ts', environment);
+fs.writeFileSync('./src/environments/environment.ts', content);
+fs.writeFileSync('./src/environments/environment.prod.ts', content);
 console.log('✅ environment.ts generated successfully');
 console.log('Written content:', fs.readFileSync('./src/environments/environment.prod.ts', 'utf8'));
