@@ -33,3 +33,4 @@ const environment = `export const environment = {
 
 fs.writeFileSync('./src/environments/environment.prod.ts', environment);
 console.log('✅ environment.ts generated successfully');
+console.log('Written content:', fs.readFileSync('./src/environments/environment.prod.ts', 'utf8'));
