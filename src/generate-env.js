@@ -1,6 +1,22 @@
 // generate-env.js
 const fs = require('fs');
 
+const required = [
+  'FIREBASE_API_KEY',
+  'FIREBASE_AUTH_DOMAIN',
+  'FIREBASE_PROJECT_ID',
+  'FIREBASE_STORAGE_BUCKET',
+  'FIREBASE_MESSAGING_SENDER_ID',
+  'FIREBASE_APP_ID',
+  'FIREBASE_MEASUREMENT_ID',
+];
+
+const missing = required.filter((k) => !process.env[k]);
+if (missing.length) {
+  console.error('❌ Missing environment variables:', missing.join(', '));
+  process.exit(1);
+}
+
 const environment = `export const environment = {
   production: true,
   firebase: {
@@ -15,5 +31,5 @@ const environment = `export const environment = {
 };
 `;
 
-fs.writeFileSync('./src/environments/environment.ts', environment);
+fs.writeFileSync('./src/environments/environment.prod.ts', environment);
 console.log('✅ environment.ts generated successfully');
