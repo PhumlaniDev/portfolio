@@ -48,12 +48,11 @@
 
   <!-- MD File Upload -->
   <div class="mb-4">
-    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+    <span class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
       Import from Markdown file
-    </label>
+    </span>
     <div class="flex items-center gap-3">
       <label
-        for="mdUpload"
         class="hover:cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-md bg-zinc-800 border border-gray-600 text-sm text-white hover:bg-zinc-700 transition duration-200"
       >
         <svg
@@ -71,14 +70,11 @@
           />
         </svg>
         Upload .md file
+
+        <!-- ← input moved inside label, id and for no longer needed -->
+        <input type="file" accept=".md" class="hidden" (change)="onMarkdownFileUpload($event)" />
       </label>
-      <input
-        id="mdUpload"
-        type="file"
-        accept=".md"
-        class="hidden"
-        (change)="onMarkdownFileUpload($event)"
-      />
+
       <span *ngIf="uploadedFileName" class="text-sm text-green-400">
         ✅ {{ uploadedFileName }}
       </span>
