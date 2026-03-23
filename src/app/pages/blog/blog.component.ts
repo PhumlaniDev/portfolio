@@ -1,27 +1,28 @@
-import 'prismjs/plugins/autoloader/prism-autoloader';
 import 'prismjs';
-import 'prismjs/components/prism-markup'; // HTML/XML
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-java';
-import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-bash';
-import 'prismjs/components/prism-sql';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-json';
+import 'prismjs/components/prism-markup'; // HTML/XML
+import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-sql';
+import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-yaml';
+import 'prismjs/plugins/autoloader/prism-autoloader';
 
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { FieldValue, Timestamp } from 'firebase/firestore';
 
-import { Blog } from '../../model/blog.model';
-import { BlogService } from '../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
-import { LoadingService } from '../../service/spinner/loading.service';
+import { RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import Prism from 'prismjs';
-import { RouterModule } from '@angular/router';
+import { Blog } from '../../model/blog.model';
 import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
+import { BlogService } from '../../service/blog/blog.service';
+import { LoadingService } from '../../service/spinner/loading.service';
 
 @Component({
   selector: 'app-blog',
@@ -33,19 +34,23 @@ import { TimeAgoPipe } from '../../pipes/time-ago.pipe';
 export class BlogComponent implements OnInit, AfterViewChecked {
   posts: Blog[] = [];
   selectedPost: Blog | null = null;
+  sanitizedContent: SafeHtml | null = null;
   lastPostId: string | null = null;
 
   constructor(
     private blogService: BlogService,
     private loading: LoadingService,
     private changeDetectorRef: ChangeDetectorRef,
+    private sanitizer: DomSanitizer,
   ) {}
 
   ngAfterViewChecked(): void {
     if (this.selectedPost?.id !== this.lastPostId) {
       this.lastPostId = this.selectedPost?.id ?? null;
-      Prism.highlightAll();
-      this.changeDetectorRef.detectChanges();
+      setTimeout(() => {
+        Prism.highlightAll();
+        this.changeDetectorRef.detectChanges();
+      }, 50);
     }
   }
 
@@ -96,5 +101,6 @@ export class BlogComponent implements OnInit, AfterViewChecked {
 
   selectPost(post: Blog) {
     this.selectedPost = post;
+    this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(post.content);
   }
 }

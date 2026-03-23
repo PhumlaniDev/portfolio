@@ -11,6 +11,7 @@ import {
 import { BlogService } from '../../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
 import { LoadingService } from '../../../service/spinner/loading.service';
+import { marked } from 'marked';
 
 @Component({
   selector: 'app-blog-editor',
@@ -27,6 +28,7 @@ import { LoadingService } from '../../../service/spinner/loading.service';
 })
 export class BlogEditorComponent implements OnInit {
   blogForm!: FormGroup;
+  uploadedFileName: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -35,6 +37,11 @@ export class BlogEditorComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    marked.setOptions({
+      gfm: true,
+      breaks: true,
+    });
+
     this.blogForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
@@ -97,6 +104,11 @@ export class BlogEditorComponent implements OnInit {
       const base64 = `data:${blobInfo.blob().type};base64,${blobInfo.base64()}`;
       return Promise.resolve(base64);
     },
+    extended_valid_elements: '*[*]',
+    valid_styles: {
+      '*': 'font-size, font-family, color, text-align, line-height, margin, padding, background-color',
+    },
+    verify_html: false,
   };
 
   async saveBlog() {
@@ -128,6 +140,7 @@ export class BlogEditorComponent implements OnInit {
         await this.blogService.addBlog(newBlog);
         console.log('Blog saved successfully via BlogService!');
         this.blogForm.reset();
+        this.uploadedFileName = null;
       } catch (error) {
         console.error('Error saving blog via BlogService:', error);
       } finally {
@@ -136,5 +149,23 @@ export class BlogEditorComponent implements OnInit {
     } else {
       this.blogForm.markAllAsTouched();
     }
+  }
+
+  async onMarkdownFileUpload(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file || !file.name.endsWith('.md')) return;
+
+    this.uploadedFileName = file.name;
+
+    const rawMarked = await file.text();
+    let html = await marked.parse(rawMarked);
+
+    html = html.replace(/<pre>\s*<\/pre>/gi, '');
+
+    this.blogForm.patchValue({ content: html });
+
+    input.value = '';
   }
 }
