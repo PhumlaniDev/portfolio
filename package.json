@@ -27,7 +27,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@tinymce/tinymce-angular": "^9.1.0",
     "firebase": "^11.2.0",
-    "marked": "^17.0.5",
+    "marked": "^15.0.12",
     "ngx-markdown": "^19.1.1",
     "portfolio": "file:",
     "postcss": "^8.5.2",
