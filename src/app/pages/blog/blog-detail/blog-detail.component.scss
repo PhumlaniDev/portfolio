@@ -3,6 +3,10 @@
   font-family: 'Georgia', 'Times New Roman', serif;
   font-size: 1.125rem;
   line-height: 1.85;
+  color: #3f3a35;
+}
+
+:host-context(.dark) ::ng-deep .blog-content {
   color: #ccc8c2;
 }
 
@@ -11,11 +15,18 @@
 :host ::ng-deep .blog-content h3,
 :host ::ng-deep .blog-content h4 {
   font-family: 'Georgia', serif;
-  color: #e8e6e1;
+  color: #1a1a1a;
   margin-top: 2.5rem;
   margin-bottom: 1rem;
   font-weight: 700;
   letter-spacing: -0.02em;
+}
+
+:host-context(.dark) ::ng-deep .blog-content h1,
+:host-context(.dark) ::ng-deep .blog-content h2,
+:host-context(.dark) ::ng-deep .blog-content h3,
+:host-context(.dark) ::ng-deep .blog-content h4 {
+  color: #e8e6e1;
 }
 
 :host ::ng-deep .blog-content h1 {
@@ -33,27 +44,40 @@
 }
 
 :host ::ng-deep .blog-content a {
-  color: #c9b99a;
+  color: #9c7a45;
   text-decoration: underline;
   text-underline-offset: 3px;
   transition: color 0.2s;
 }
 
+:host-context(.dark) ::ng-deep .blog-content a {
+  color: #c9b99a;
+}
+
 :host ::ng-deep .blog-content a:hover {
+  color: #1a1a1a;
+}
+
+:host-context(.dark) ::ng-deep .blog-content a:hover {
   color: #e8e6e1;
 }
 
 :host ::ng-deep .blog-content blockquote {
-  border-left: 3px solid #4a4540;
+  border-left: 3px solid #d4cfc7;
   margin: 2rem 0;
   padding: 0.5rem 0 0.5rem 1.5rem;
-  color: #a0998f;
+  color: #6b6460;
   font-style: italic;
 }
 
+:host-context(.dark) ::ng-deep .blog-content blockquote {
+  border-left-color: #4a4540;
+  color: #a0998f;
+}
+
 :host ::ng-deep .blog-content pre {
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
+  background: #f4f2ef;
+  border: 1px solid #e2ddd6;
   border-radius: 8px;
   padding: 1.25rem 1.5rem;
   overflow-x: auto;
@@ -61,18 +85,32 @@
   font-size: 0.875rem;
 }
 
+:host-context(.dark) ::ng-deep .blog-content pre {
+  background: #1a1a1a;
+  border-color: #2a2a2a;
+}
+
 :host ::ng-deep .blog-content code {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 0.875em;
-  background: #1e1e1e;
+  background: #efebe6;
   padding: 0.15em 0.4em;
   border-radius: 4px;
+  color: #9c5a2e;
+}
+
+:host-context(.dark) ::ng-deep .blog-content code {
+  background: #1e1e1e;
   color: #c9b99a;
 }
 
 :host ::ng-deep .blog-content pre code {
   background: transparent;
   padding: 0;
+  color: #3f3a35;
+}
+
+:host-context(.dark) ::ng-deep .blog-content pre code {
   color: #ccc8c2;
 }
 
@@ -87,11 +125,19 @@
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+:host-context(.dark) ::ng-deep .blog-content img {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
 }
 
 :host ::ng-deep .blog-content img:hover {
   transform: scale(1.01);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+
+:host-context(.dark) ::ng-deep .blog-content img:hover {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
@@ -122,8 +168,12 @@
 
 :host ::ng-deep .blog-content hr {
   border: none;
-  border-top: 1px solid #2a2a2a;
+  border-top: 1px solid #e2ddd6;
   margin: 3rem 0;
+}
+
+:host-context(.dark) ::ng-deep .blog-content hr {
+  border-top-color: #2a2a2a;
 }
 
 :host ::ng-deep .blog-content table {
@@ -135,15 +185,25 @@
 
 :host ::ng-deep .blog-content th,
 :host ::ng-deep .blog-content td {
-  border: 1px solid #2a2a2a;
+  border: 1px solid #e2ddd6;
   padding: 0.75rem 1rem;
   text-align: left;
 }
 
+:host-context(.dark) ::ng-deep .blog-content th,
+:host-context(.dark) ::ng-deep .blog-content td {
+  border-color: #2a2a2a;
+}
+
 :host ::ng-deep .blog-content th {
+  background: #f4f2ef;
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+:host-context(.dark) ::ng-deep .blog-content th {
   background: #1a1a1a;
   color: #e8e6e1;
-  font-weight: 600;
 }
 
 /* Clearfix for floated images */

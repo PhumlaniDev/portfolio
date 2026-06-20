@@ -1,11 +1,13 @@
-<div class="min-h-screen bg-[#0f0f0f] text-[#e8e6e1]">
+<div
+  class="min-h-screen bg-white text-slate-900 dark:bg-[#0f0f0f] dark:text-[#e8e6e1] transition-colors duration-300"
+>
   <!-- Header bar -->
   <div
-    class="sticky top-0 z-40 flex items-center justify-between border-b border-white/10 bg-[#0f0f0f]/95 px-6 py-3 backdrop-blur-sm"
+    class="sticky top-0 z-40 flex items-center justify-between border-b border-slate-200 dark:border-white/10 bg-white/95 dark:bg-[#0f0f0f]/95 px-6 py-3 backdrop-blur-sm"
   >
     <a
       routerLink="/blog/admin"
-      class="flex items-center gap-2 text-sm text-[#a0998f] hover:text-[#e8e6e1]"
+      class="flex items-center gap-2 text-sm text-slate-500 dark:text-[#a0998f] hover:text-slate-900 dark:hover:text-[#e8e6e1]"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -21,19 +23,19 @@
 
     <div class="flex items-center gap-3">
       @if (isSaving()) {
-        <span class="text-xs text-[#6b6460]">Saving...</span>
+        <span class="text-xs text-slate-400 dark:text-[#6b6460]">Saving...</span>
       }
       <button
         (click)="saveDraft()"
         [disabled]="isSaving()"
-        class="rounded-lg border border-white/10 px-4 py-1.5 text-sm text-[#a0998f] transition-colors hover:border-white/20 hover:text-[#e8e6e1] disabled:opacity-40"
+        class="rounded-lg border border-slate-200 dark:border-white/10 px-4 py-1.5 text-sm text-slate-500 dark:text-[#a0998f] transition-colors hover:border-slate-300 dark:hover:border-white/20 hover:text-slate-900 dark:hover:text-[#e8e6e1] disabled:opacity-40"
       >
         Save draft
       </button>
       <button
         (click)="publish()"
         [disabled]="isSaving() || form.invalid"
-        class="rounded-lg bg-[#c9b99a] px-4 py-1.5 text-sm font-medium text-[#0f0f0f] transition-opacity hover:opacity-90 disabled:opacity-40"
+        class="rounded-lg bg-slate-900 dark:bg-[#c9b99a] px-4 py-1.5 text-sm font-medium text-white dark:text-[#0f0f0f] transition-opacity hover:opacity-90 disabled:opacity-40"
       >
         {{ isEditMode() ? 'Update' : 'Publish' }}
       </button>
@@ -43,7 +45,7 @@
   <div class="mx-auto max-w-4xl px-6 py-10">
     @if (errorMessage()) {
       <div
-        class="mb-6 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400"
+        class="mb-6 rounded-lg border border-red-300 dark:border-red-500/20 bg-red-50 dark:bg-red-500/10 px-4 py-3 text-sm text-red-600 dark:text-red-400"
       >
         {{ errorMessage() }}
       </div>
@@ -57,14 +59,14 @@
           type="text"
           placeholder="Post title..."
           (input)="onTitleChange()"
-          class="w-full border-0 bg-transparent font-serif text-4xl font-bold text-[#e8e6e1] placeholder-[#3a3530] outline-none"
+          class="w-full border-0 bg-transparent font-serif text-4xl font-bold text-slate-900 dark:text-[#e8e6e1] placeholder-slate-300 dark:placeholder-[#3a3530] outline-none"
         />
       </div>
 
       <!-- Slug preview -->
-      <div class="flex items-center gap-2 text-xs text-[#6b6460]">
+      <div class="flex items-center gap-2 text-xs text-slate-400 dark:text-[#6b6460]">
         <span>URL:</span>
-        <span class="font-mono text-[#a0998f]">/blog/{{ slugPreview() }}</span>
+        <span class="font-mono text-slate-500 dark:text-[#a0998f]">/blog/{{ slugPreview() }}</span>
       </div>
 
       <!-- Excerpt -->
@@ -73,7 +75,7 @@
           formControlName="excerpt"
           placeholder="Short excerpt for listing pages..."
           rows="2"
-          class="w-full resize-none rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-sm text-[#ccc8c2] placeholder-[#4a4540] outline-none transition-colors focus:border-white/20"
+          class="w-full resize-none rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-4 py-3 text-sm text-slate-700 dark:text-[#ccc8c2] placeholder-slate-400 dark:placeholder-[#4a4540] outline-none transition-colors focus:border-slate-300 dark:focus:border-white/20"
         >
         </textarea>
       </div>
@@ -84,11 +86,10 @@
           formControlName="tagsInput"
           type="text"
           placeholder="Tags (comma separated): java, spring-boot, devops"
-          class="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-[#ccc8c2] placeholder-[#4a4540] outline-none transition-colors focus:border-white/20"
+          class="w-full rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-4 py-2.5 text-sm text-slate-700 dark:text-[#ccc8c2] placeholder-slate-400 dark:placeholder-[#4a4540] outline-none transition-colors focus:border-slate-300 dark:focus:border-white/20"
         />
       </div>
 
-      <!-- Cover image URL -->
       <!-- Cover image URL with upload -->
       <div class="space-y-2">
         <div class="flex gap-2">
@@ -96,11 +97,11 @@
             formControlName="coverImageUrl"
             type="url"
             placeholder="Cover image URL (optional)"
-            class="flex-1 rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-[#ccc8c2] placeholder-[#4a4540] outline-none transition-colors focus:border-white/20"
+            class="flex-1 rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-4 py-2.5 text-sm text-slate-700 dark:text-[#ccc8c2] placeholder-slate-400 dark:placeholder-[#4a4540] outline-none transition-colors focus:border-slate-300 dark:focus:border-white/20"
           />
 
           <label
-            class="flex items-center gap-2 cursor-pointer rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-sm text-[#a0998f] transition-colors hover:border-white/20 hover:text-[#e8e6e1] whitespace-nowrap"
+            class="flex items-center gap-2 cursor-pointer rounded-lg border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-4 py-2.5 text-sm text-slate-500 dark:text-[#a0998f] transition-colors hover:border-slate-300 dark:hover:border-white/20 hover:text-slate-900 dark:hover:text-[#e8e6e1] whitespace-nowrap"
           >
             @if (isUploadingCover()) {
               <span>Uploading...</span>
@@ -127,7 +128,7 @@
       </div>
 
       <!-- TinyMCE Editor -->
-      <div class="rounded-xl border border-white/10 overflow-hidden">
+      <div class="rounded-xl border border-slate-200 dark:border-white/10 overflow-hidden">
         <editor formControlName="content" [init]="tinymceConfig" apiKey="YOUR_TINYMCE_API_KEY">
         </editor>
       </div>
