@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
         this.loading.hide();
         signInWithEmailAndPassword(this.auth, this.email, this.password)
           .then(() => {
-            this.router.navigateByUrl('/admin', { replaceUrl: true });
+            this.router.navigateByUrl('/blog/admin', { replaceUrl: true });
           })
           .catch((error) => {
             console.error('Login error:', error);
