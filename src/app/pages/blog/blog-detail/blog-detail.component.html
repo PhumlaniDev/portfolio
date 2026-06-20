@@ -1,4 +1,101 @@
-<div>
-  <h1 class="text-2xl font-bold mb-4">Blog Post</h1>
-  <markdown [src]="'assets/posts/' + file + '.md'"></markdown>
+<div class="min-h-screen bg-[#0f0f0f] text-[#e8e6e1]">
+  <!-- Back navigation -->
+  <div class="mx-auto max-w-3xl px-6 pt-8">
+    <a
+      routerLink="/blog"
+      class="inline-flex items-center gap-2 text-sm text-[#a0998f] transition-colors hover:text-[#e8e6e1]"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      All posts
+    </a>
+  </div>
+
+  @if (isLoading()) {
+    <!-- Loading skeleton -->
+    <div class="mx-auto max-w-3xl px-6 pt-12 animate-pulse">
+      <div class="mb-4 h-4 w-24 rounded bg-white/10"></div>
+      <div class="mb-3 h-10 w-full rounded bg-white/10"></div>
+      <div class="mb-2 h-10 w-3/4 rounded bg-white/10"></div>
+      <div class="mt-6 h-4 w-48 rounded bg-white/10"></div>
+      <div class="mt-12 space-y-3">
+        @for (i of [1, 2, 3, 4, 5]; track i) {
+          <div class="h-4 rounded bg-white/10" [style.width]="85 + i + '%'"></div>
+        }
+      </div>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="mx-auto max-w-3xl px-6 pt-20 text-center">
+      <p class="text-[#a0998f]">Post not found.</p>
+      <a routerLink="/blog" class="mt-4 inline-block text-sm underline">Back to blog</a>
+    </div>
+  }
+
+  @if (post(); as post) {
+    <article class="mx-auto max-w-3xl px-6 pb-24">
+      <!-- Header -->
+      <header class="pt-12">
+        <!-- Tags -->
+        <div class="mb-5 flex flex-wrap gap-2">
+          @for (tag of post.tags; track tag) {
+            <span
+              class="rounded-full border border-white/10 px-3 py-0.5 text-xs font-medium tracking-wide text-[#a0998f]"
+            >
+              {{ tag }}
+            </span>
+          }
+        </div>
+
+        <!-- Title -->
+        <h1
+          class="font-serif text-4xl font-bold leading-tight tracking-tight text-[#e8e6e1] md:text-5xl"
+        >
+          {{ post.title }}
+        </h1>
+
+        <!-- Meta -->
+        <div
+          class="mt-6 flex items-center gap-4 border-b border-white/10 pb-8 text-sm text-[#6b6460]"
+        >
+          <time [dateTime]="postDate()?.toISOString()">
+            {{ postDate() | date: 'MMMM d, yyyy' }}
+          </time>
+          <span>·</span>
+          <span>{{ post.read_time_minutes }} min read</span>
+        </div>
+
+        <!-- Cover image -->
+        @if (post.coverImageUrl) {
+          <div class="mt-8 overflow-hidden rounded-xl">
+            <img
+              [src]="post.coverImageUrl"
+              [alt]="post.title"
+              class="w-full object-cover transition-transform duration-500 hover:scale-[1.02]"
+              style="max-height: 480px"
+            />
+          </div>
+        }
+      </header>
+
+      <!-- Blog Content -->
+      <div #contentRef class="blog-content mt-12" [innerHTML]="sanitizedContent()"></div>
+    </article>
+  }
 </div>
+
+@if (lightboxUrl()) {
+  <app-lightbox
+    [url]="lightboxUrl()!"
+    [caption]="lightboxCaption()"
+    (close)="lightboxUrl.set(null)"
+  />
+}

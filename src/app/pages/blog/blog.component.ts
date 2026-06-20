@@ -11,12 +11,11 @@ import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-yaml';
 import 'prismjs/plugins/autoloader/prism-autoloader';
 
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Component, Injector, OnInit, inject, runInInjectionContext } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { FieldValue, Timestamp } from 'firebase/firestore';
 
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
 import Prism from 'prismjs';
 import { Blog } from '../../model/blog.model';
@@ -31,28 +30,16 @@ import { LoadingService } from '../../service/spinner/loading.service';
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.scss',
 })
-export class BlogComponent implements OnInit, AfterViewChecked {
+export class BlogComponent implements OnInit {
   posts: Blog[] = [];
-  selectedPost: Blog | null = null;
-  sanitizedContent: SafeHtml | null = null;
   lastPostId: string | null = null;
+  router = inject(Router);
+  private injector = inject(Injector);
 
   constructor(
     private blogService: BlogService,
     private loading: LoadingService,
-    private changeDetectorRef: ChangeDetectorRef,
-    private sanitizer: DomSanitizer,
   ) {}
-
-  ngAfterViewChecked(): void {
-    if (this.selectedPost?.id !== this.lastPostId) {
-      this.lastPostId = this.selectedPost?.id ?? null;
-      setTimeout(() => {
-        Prism.highlightAll();
-        this.changeDetectorRef.detectChanges();
-      }, 50);
-    }
-  }
 
   ngOnInit(): void {
     if (Prism.plugins['autoloader']) {
@@ -60,35 +47,25 @@ export class BlogComponent implements OnInit, AfterViewChecked {
     }
 
     this.loading.show('Fetching blogs...');
-    this.blogService.getBlogs().subscribe({
-      next: (blogs) => {
-        this.posts = blogs
-          .filter((blog) => blog.status === 'published')
-          .sort((a, b) => {
-            const dateA = this.toDate(a.published_date).getTime();
-            const dateB = this.toDate(b.published_date).getTime();
-            return dateB - dateA;
-          });
-        this.loading.hide();
-      },
-      error: (err) => {
-        console.error('Error fetching blogs:', err);
-        this.loading.hide();
-      },
-    });
 
-    // setTimeout(() => {
-    //   this.loading.hide();
-    //   this.blogService.getBlogs().subscribe((blogs) => {
-    //     this.posts = blogs
-    //       .filter((blog) => blog.status === 'published')
-    //       .sort((a, b) => {
-    //         const dateA = this.toDate(a.published_date).getTime();
-    //         const dateB = this.toDate(b.published_date).getTime();
-    //         return dateB - dateA;
-    //       });
-    //   });
-    // }, 1500);
+    runInjectionContext(this.injector, () => {
+      this.blogService.getAllBlogs().subscribe({
+        next: (blogs) => {
+          this.posts = blogs
+            .filter((blog) => blog.status === 'published')
+            .sort((a, b) => {
+              const dateA = this.toDate(a.published_date).getTime();
+              const dateB = this.toDate(b.published_date).getTime();
+              return dateB - dateA;
+            });
+          this.loading.hide();
+        },
+        error: (err) => {
+          console.error('Error fetching blogs:', err);
+          this.loading.hide();
+        },
+      });
+    });
   }
 
   private toDate(value: string | number | Date | Timestamp | null | undefined | FieldValue): Date {
@@ -98,9 +75,8 @@ export class BlogComponent implements OnInit, AfterViewChecked {
     if (typeof value === 'string' || typeof value === 'number') return new Date(value);
     return new Date(0);
   }
-
-  selectPost(post: Blog) {
-    this.selectedPost = post;
-    this.sanitizedContent = this.sanitizer.bypassSecurityTrustHtml(post.content);
-  }
+}
+function runInjectionContext(_injector: Injector, arg1: () => void) {
+  // Delegate to Angular's runInInjectionContext to execute fn within given injector
+  return runInInjectionContext(_injector, arg1);
 }

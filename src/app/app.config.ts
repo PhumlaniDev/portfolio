@@ -1,12 +1,12 @@
-import { ApplicationConfig, SecurityContext } from '@angular/core';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { ApplicationConfig, SecurityContext } from '@angular/core';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
-import { environment } from '../environments/environment';
 import { provideMarkdown } from 'ngx-markdown';
+import { environment } from '../environments/environment.prod';
 import { routes } from './app.routes';
 
 const firebaseConfig = environment.firebase;

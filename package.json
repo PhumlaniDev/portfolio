@@ -28,6 +28,7 @@
     "@tinymce/tinymce-angular": "^9.1.0",
     "firebase": "^11.2.0",
     "marked": "^15.0.12",
+    "ngx-lightbox": "^3.0.0",
     "ngx-markdown": "^19.1.1",
     "portfolio": "file:",
     "postcss": "^8.5.2",
@@ -48,6 +49,7 @@
     "@types/jasmine": "~5.1.0",
     "@types/marked": "^5.0.2",
     "@types/prismjs": "^1.26.5",
+    "@types/tinymce": "^4.6.9",
     "@types/turndown": "^5.0.5",
     "angular-eslint": "19.1.0",
     "eslint": "^9.20.0",
@@ -59,6 +61,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "lint-staged": "^15.4.3",
+    "nodemon": "^3.1.14",
     "prettier": "^3.5.1",
     "typescript": "^5.7.3",
     "typescript-eslint": "8.23.0"

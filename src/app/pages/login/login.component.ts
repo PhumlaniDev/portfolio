@@ -1,5 +1,5 @@
-import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Component, OnInit } from '@angular/core';
+import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import {
   FormBuilder,
   FormGroup,
@@ -9,8 +9,8 @@ import {
 } from '@angular/forms';
 
 import { CommonModule } from '@angular/common';
-import { LoadingService } from '../../service/spinner/loading.service';
 import { Router } from '@angular/router';
+import { LoadingService } from '../../service/spinner/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
         this.loading.hide();
         signInWithEmailAndPassword(this.auth, this.email, this.password)
           .then(() => {
-            this.router.navigate(['/admin']);
+            this.router.navigateByUrl('/admin', { replaceUrl: true });
           })
           .catch((error) => {
             console.error('Login error:', error);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 import { Project } from '../../model/project.model';
@@ -12,13 +12,12 @@ import { ProjectService } from '../../service/project/project.service';
   styleUrl: './projects.component.scss',
 })
 export class ProjectsComponent implements OnInit {
+  private projectService = inject(ProjectService);
   projects: Project[] = [];
 
-  constructor(private readonly projectService: ProjectService) {}
-
   ngOnInit(): void {
-    this.projectService.getProjects().subscribe((projects) => {
-      this.projects = projects;
+    this.projectService.project$.subscribe((data) => {
+      this.projects = data;
     });
   }
 }

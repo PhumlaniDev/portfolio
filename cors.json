@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["http://localhost:4200", "https://phumlanidev.netlify.app"],
+    "method": ["GET", "POST", "PUT", "DELETE", "HEAD"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": ["Content-Type", "Authorization", "Content-Length"]
+  }
+]

@@ -1,5 +1,5 @@
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 import { Injectable, inject } from '@angular/core';
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 
 import { Observable } from 'rxjs';
 import { Project } from '../../model/project.model';
@@ -9,10 +9,5 @@ import { Project } from '../../model/project.model';
 })
 export class ProjectService {
   private firestore: Firestore = inject(Firestore);
-
-  getProjects(): Observable<Project[]> {
-    const projectRef = collection(this.firestore, 'projects');
-    return collectionData(projectRef, { idField: 'id' }) as Observable<Project[]>;
-    // return this.http.get<{ projects: Project[] }>(this.jsonUrl);
-  }
+  project$ = collectionData(collection(this.firestore, 'projects')) as Observable<Project[]>;
 }

@@ -10,19 +10,19 @@ export interface Author {
   };
 }
 
-export interface Tag {
-  name: string;
-}
-
 export interface Blog {
+  slug: string | null | undefined;
+  excerpt: string | null | undefined;
+  coverImageUrl: string;
   id?: string;
   title: string;
   description: string;
   content: string;
   author: Author;
-  tags: Tag[];
+  tags: string[];
   created_at: string | number | Date | Timestamp | null;
   updated_at: string | number | Date | Timestamp | null;
   published_date: string | number | Date | Timestamp | null;
   status: string;
+  read_time_minutes: number;
 }

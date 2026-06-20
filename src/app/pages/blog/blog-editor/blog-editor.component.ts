@@ -1,17 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EditorComponent, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Author, Blog } from '../../../model/blog.model';
 
-import { BlogService } from '../../../service/blog/blog.service';
 import { CommonModule } from '@angular/common';
-import { LoadingService } from '../../../service/spinner/loading.service';
-import { marked } from 'marked';
+import { BlobInfo } from '../../../model/BlobInfo.model';
+import { BlogService } from '../../../service/blog/blog.service';
 
 @Component({
   selector: 'app-blog-editor',
@@ -27,145 +22,223 @@ import { marked } from 'marked';
   styleUrl: './blog-editor.component.scss',
 })
 export class BlogEditorComponent implements OnInit {
-  blogForm!: FormGroup;
-  uploadedFileName: string | null = null;
+  private fb = inject(FormBuilder);
+  private blogService = inject(BlogService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  constructor(
-    private fb: FormBuilder,
-    private blogService: BlogService,
-    private loading: LoadingService,
-  ) {}
+  isSaving = signal(false);
+  isEditMode = signal(false);
+  editingId = signal<string | null>(null);
+  errorMessage = signal('');
 
-  ngOnInit(): void {
-    marked.setOptions({
-      gfm: true,
-      breaks: true,
-    });
-
-    this.blogForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(10)]],
-      content: ['', [Validators.required, Validators.minLength(20)]],
-      tags: [''],
-    });
-  }
-
-  editorConfig: EditorComponent['init'] = {
-    base_url: '/tinymce',
-    suffix: '.min',
-    content_style: `
-    body { font-family: Georgia, serif; font-size: 16px; }
-    pre[class*="language-"] {
-      background: #1e1e1e;
-      border-radius: 6px;
-      padding: 1rem;
-      font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
-      font-size: 14px;
-    }
-    code { font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace; }
-  `,
-    height: 500,
-    menubar: true,
-    plugins: 'lists link image table codesample help wordcount preview fullscreen emoticons',
-    toolbar:
-      'undo redo | formatselect | bold italic underline | ' +
-      'alignleft aligncenter alignright | bullist numlist outdent indent | ' +
-      'removeformat | link image | codesample preview fullscreen | emoticons',
-    license_key: 'gpl', // ✅ correct key
-    promotion: false,
-    skin: 'oxide-dark',
-    content_css: 'dark',
-    automatic_uploads: true,
-    codesample_global_prismjs: true,
-    codesample_languages: [
-      { text: 'HTML/XML', value: 'markup' },
-      { text: 'JavaScript', value: 'javascript' },
-      { text: 'CSS', value: 'css' },
-      { text: 'TypeScript', value: 'typescript' },
-      { text: 'Python', value: 'python' },
-      { text: 'Java', value: 'java' },
-      { text: 'C', value: 'c' },
-      { text: 'C#', value: 'csharp' },
-      { text: 'C++', value: 'cpp' },
-      { text: 'Ruby', value: 'ruby' },
-      { text: 'Go', value: 'go' },
-      { text: 'PHP', value: 'php' },
-      { text: 'Swift', value: 'swift' },
-      { text: 'Kotlin', value: 'kotlin' },
-      { text: 'Rust', value: 'rust' },
-      { text: 'Dart', value: 'dart' },
-      { text: 'SQL', value: 'sql' },
-      { text: 'Bash', value: 'bash' },
-      { text: 'JSON', value: 'json' },
-      { text: 'Markdown', value: 'markdown' },
-      { text: 'YAML', value: 'yaml' },
-    ],
-    images_upload_handler: async (blobInfo) => {
-      const base64 = `data:${blobInfo.blob().type};base64,${blobInfo.base64()}`;
-      return Promise.resolve(base64);
+  private currentAuthor: Author = {
+    name: 'Phumlani',
+    email: 'your@email.com',
+    profile_image: 'https://...',
+    social_links: {
+      linkedin: 'https://linkedin.com/in/...',
+      github: 'https://github.com/PhumlaniDev',
     },
-    extended_valid_elements: '*[*]',
-    valid_styles: {
-      '*': 'font-size, font-family, color, text-align, line-height, margin, padding, background-color',
-    },
-    verify_html: false,
   };
 
-  async saveBlog() {
-    if (this.blogForm.valid) {
-      const formData = this.blogForm.value;
-      this.loading.show('Saving blog...');
+  form = this.fb.group({
+    title: ['', Validators.required],
+    slug: [''],
+    excerpt: ['', Validators.required],
+    tagsInput: [''],
+    coverImageUrl: [''],
+    content: ['', Validators.required],
+  });
 
-      const newBlog = {
-        title: formData.title ?? '',
-        description: formData.description ?? '',
-        content: formData.content ?? '',
-        author: {
-          name: 'Phumlani Arendse',
-          email: 'aphumlani.dev@gmail.com',
-          profile_image: 'https://i.pravatar.cc/150?img=3',
-          social_links: {
-            linkedin: 'https://www.linkedin.com/in/phumlani-arendse/',
-            github: 'https://github.com/PhumlaniDev',
-          },
-        },
-        tags: formData.tags?.split(',').map((t: string) => ({ name: t.trim() })) || [],
-        // created_at: serverTimestamp(),
-        // updated_at: serverTimestamp(),
-        // published_date: serverTimestamp(),
-        status: 'published',
-      };
+  slugPreview = computed(() => {
+    const title = this.form.get('title')?.value ?? '';
+    return this.blogService.generateSlug(title);
+  });
 
-      try {
-        await this.blogService.addBlog(newBlog);
-        console.log('Blog saved successfully via BlogService!');
-        this.blogForm.reset();
-        this.uploadedFileName = null;
-      } catch (error) {
-        console.error('Error saving blog via BlogService:', error);
-      } finally {
-        this.loading.hide();
+  tinymceConfig = {
+    height: 600,
+    menubar: 'file edit view insert format tools table',
+    plugins: [
+      'advlist',
+      'autolink',
+      'lists',
+      'link',
+      'image',
+      'charmap',
+      'preview',
+      'anchor',
+      'searchreplace',
+      'visualblocks',
+      'code',
+      'fullscreen',
+      'insertdatetime',
+      'media',
+      'table',
+      'code',
+      'help',
+      'wordcount',
+    ],
+    toolbar:
+      'undo redo | blocks | bold italic underline strikethrough | ' +
+      'alignleft aligncenter alignright alignjustify | ' +
+      'bullist numlist outdent indent | ' +
+      'link image media | code fullscreen | removeformat help',
+    skin: 'oxide-dark',
+    content_css: 'dark',
+
+    // Image resize — drag handles enabled
+    object_resizing: true,
+    image_advtab: true,
+    image_dimensions: true,
+
+    // Upload inline images to Firebase Storage
+    images_upload_handler: async (blobInfo: BlobInfo): Promise<string> => {
+      const file = blobInfo.blob() as File;
+      return this.blogService.uploadImage(file);
+    },
+
+    // Style content to match dark blog theme
+    content_style: `
+      body {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 18px;
+        line-height: 1.85;
+        color: #ccc8c2;
+        background: #161616;
+        max-width: 760px;
+        margin: 2rem auto;
+        padding: 0 1rem;
       }
-    } else {
-      this.blogForm.markAllAsTouched();
+      h1, h2, h3, h4 {
+        font-family: Georgia, serif;
+        color: #e8e6e1;
+        letter-spacing: -0.02em;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        display: block;
+        margin: 1.5rem auto;
+      }
+      blockquote {
+        border-left: 3px solid #4a4540;
+        padding-left: 1.5rem;
+        color: #a0998f;
+        font-style: italic;
+      }
+      pre {
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        border-radius: 8px;
+        padding: 1rem 1.5rem;
+        overflow-x: auto;
+      }
+      code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.875em;
+        background: #1e1e1e;
+        padding: 0.15em 0.4em;
+        border-radius: 4px;
+        color: #c9b99a;
+      }
+      a { color: #c9b99a; }
+    `,
+  };
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.isEditMode.set(true);
+      this.editingId.set(id);
+      this.blogService.getBlogById(id).subscribe((blog) => {
+        if (blog) {
+          this.form.patchValue({
+            title: blog.title,
+            slug: blog.slug,
+            excerpt: blog.excerpt,
+            tagsInput: blog.tags.join(', '),
+            coverImageUrl: blog.coverImageUrl ?? '',
+            content: blog.content,
+          });
+        }
+      });
     }
   }
 
-  async onMarkdownFileUpload(event: Event): Promise<void> {
+  isUploadingCover = signal(false);
+
+  async onCoverImageSelected(event: Event): Promise<void> {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
+    if (!file) return;
 
-    if (!file || !file.name.endsWith('.md')) return;
+    this.isUploadingCover.set(true);
+    try {
+      const url = await this.blogService.uploadImage(file);
+      this.form.patchValue({ coverImageUrl: url });
+    } catch (err) {
+      console.error('Cover image upload failed:', err);
+      this.errorMessage.set('Cover image upload failed.');
+    } finally {
+      this.isUploadingCover.set(false);
+      input.value = '';
+    }
+  }
 
-    this.uploadedFileName = file.name;
+  onTitleChange(): void {
+    const title = this.form.get('title')?.value ?? '';
+    this.form.patchValue({ slug: this.blogService.generateSlug(title) });
+  }
 
-    const rawMarked = await file.text();
-    let html = await marked.parse(rawMarked);
+  async saveDraft(): Promise<void> {
+    await this.save('draft');
+  }
 
-    html = html.replace(/<pre>\s*<\/pre>/gi, '');
+  async publish(): Promise<void> {
+    if (this.form.invalid) return;
+    await this.save('published');
+  }
 
-    this.blogForm.patchValue({ content: html });
+  private async save(status: 'draft' | 'published'): Promise<void> {
+    if (this.isSaving()) return;
+    this.isSaving.set(true);
+    this.errorMessage.set('');
 
-    input.value = '';
+    try {
+      const values = this.form.value;
+      const tags = (values.tagsInput ?? '')
+        .split(',')
+        .map((t: string) => t.trim())
+        .filter(Boolean);
+
+      const payload: Omit<Blog, 'id' | 'created_at' | 'updated_at' | 'published_date'> = {
+        title: values.title ?? '',
+        description: values.excerpt ?? '',
+        slug: this.blogService.generateSlug(values.title ?? ''),
+        excerpt: values.excerpt ?? '',
+        content: values.content ?? '',
+        coverImageUrl: values.coverImageUrl ?? '',
+        author: this.currentAuthor, // inject or hardcode your Author object
+        tags,
+        status,
+        read_time_minutes: this.blogService.estimateReadTime(values.content ?? ''),
+      };
+
+      if (this.isEditMode() && this.editingId()) {
+        await this.blogService.updateBlog(this.editingId()!, payload);
+      } else {
+        console.log('Content being saved:', JSON.stringify(values.content));
+        await this.blogService.createBlog(payload);
+      }
+
+      await this.router.navigate(['/blog/admin']);
+    } catch (err) {
+      this.errorMessage.set('Something went wrong. Please try again.');
+      console.error(err);
+    } finally {
+      this.isSaving.set(false);
+    }
   }
 }

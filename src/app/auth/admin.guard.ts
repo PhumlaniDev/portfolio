@@ -1,21 +1,24 @@
-import { Auth } from '@angular/fire/auth';
-import { CanActivateFn } from '@angular/router';
-import { Router } from '@angular/router';
+import { Auth, authState } from '@angular/fire/auth';
+import { CanActivateFn, Router } from '@angular/router';
+import { map, take } from 'rxjs';
+
 import { inject } from '@angular/core';
-import { onAuthStateChanged } from 'firebase/auth';
 
 export const adminGuard: CanActivateFn = () => {
   const auth = inject(Auth);
   const router = inject(Router);
 
-  return new Promise<boolean>((resolve) => {
-    onAuthStateChanged(auth, (user) => {
+  return authState(auth).pipe(
+    take(1),
+    map((user) => {
+      console.log('Guard check - user:', user, 'email:', user?.email);
       if (user?.email === 'aphumlani.dev@gmail.com') {
-        resolve(true);
-      } else {
-        router.navigate(['/']);
-        resolve(false);
+        console.log('Guard: access granted');
+        return true;
       }
-    });
-  });
+      console.log('Guard: access denied, redirecting');
+      router.navigate(['/']);
+      return false;
+    }),
+  );
 };
