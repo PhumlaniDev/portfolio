@@ -3,21 +3,74 @@
 >
   <!-- Back navigation -->
   <div class="mx-auto max-w-3xl px-6 pt-8">
-    <a
-      routerLink="/blog"
-      class="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-[#a0998f] transition-colors hover:text-slate-900 dark:hover:text-[#e8e6e1]"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-4 w-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
+    <div class="flex items-center justify-between">
+      <a
+        routerLink="/blog"
+        class="inline-flex items-center gap-2 text-sm text-slate-500 dark:text-[#a0998f] transition-colors hover:text-slate-900 dark:hover:text-[#e8e6e1]"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-      </svg>
-      All posts
-    </a>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        All posts
+      </a>
+
+      <!-- Admin actions — only visible when logged in -->
+      @if (isAdmin() && post()) {
+        <div class="flex items-center gap-2">
+          <button
+            (click)="editPost()"
+            class="flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-white/10 px-3 py-1.5 text-xs font-medium text-slate-500 dark:text-[#a0998f] transition-colors hover:border-slate-300 dark:hover:border-white/20 hover:text-slate-900 dark:hover:text-[#e8e6e1]"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3.5 w-3.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+            Edit
+          </button>
+          <button
+            (click)="requestDelete()"
+            class="flex items-center gap-1.5 rounded-lg border border-red-200 dark:border-red-500/20 px-3 py-1.5 text-xs font-medium text-red-500 dark:text-red-400 transition-colors hover:border-red-300 dark:hover:border-red-500/40 hover:bg-red-50 dark:hover:bg-red-500/10"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-3.5 w-3.5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+              />
+            </svg>
+            Delete
+          </button>
+        </div>
+      }
+    </div>
   </div>
 
   @if (isLoading()) {
@@ -73,6 +126,14 @@
           </time>
           <span>·</span>
           <span>{{ post.read_time_minutes }} min read</span>
+          @if (post.status === 'draft') {
+            <span>·</span>
+            <span
+              class="rounded-full bg-amber-100 dark:bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-600 dark:text-amber-400"
+            >
+              Draft
+            </span>
+          }
         </div>
 
         <!-- Cover image -->
@@ -100,4 +161,46 @@
     [caption]="lightboxCaption()"
     (close)="lightboxUrl.set(null)"
   />
+}
+
+<!-- Delete confirmation dialog -->
+@if (showDeleteConfirm()) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-6"
+    (click)="cancelDelete()"
+    (keydown.escape)="cancelDelete()"
+    tabindex="0"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Confirm delete"
+  >
+    <div
+      class="w-full max-w-sm rounded-xl bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-white/10 p-6 shadow-2xl"
+      (click)="$event.stopPropagation()"
+      (keydown)="$event.stopPropagation()"
+      role="presentation"
+    >
+      <h3 class="text-lg font-semibold text-slate-900 dark:text-[#e8e6e1]">Delete this post?</h3>
+      <p class="mt-2 text-sm text-slate-500 dark:text-[#a0998f]">
+        This action can't be undone. The post will be permanently removed.
+      </p>
+
+      <div class="mt-6 flex justify-end gap-3">
+        <button
+          (click)="cancelDelete()"
+          [disabled]="isDeleting()"
+          class="rounded-lg border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-600 dark:text-[#a0998f] transition-colors hover:bg-slate-50 dark:hover:bg-white/5 disabled:opacity-40"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="confirmDelete()"
+          [disabled]="isDeleting()"
+          class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+        >
+          {{ isDeleting() ? 'Deleting...' : 'Delete' }}
+        </button>
+      </div>
+    </div>
+  </div>
 }
