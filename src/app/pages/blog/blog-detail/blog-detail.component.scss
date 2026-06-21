@@ -162,6 +162,19 @@
   margin-bottom: 1.5rem;
 }
 
+:host ::ng-deep .blog-content ul {
+  list-style-type: disc;
+}
+
+:host ::ng-deep .blog-content ol {
+  list-style-type: decimal;
+}
+
+:host ::ng-deep .blog-content li {
+  margin-bottom: 0.5rem;
+  display: list-item;
+}
+
 :host ::ng-deep .blog-content li {
   margin-bottom: 0.5rem;
 }

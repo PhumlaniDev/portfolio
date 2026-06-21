@@ -100,51 +100,64 @@ export class BlogEditorComponent implements OnInit {
 
     // Style content to match dark blog theme
     content_style: `
-      body {
-        font-family: Georgia, 'Times New Roman', serif;
-        font-size: 18px;
-        line-height: 1.85;
-        color: #ccc8c2;
-        background: #161616;
-        max-width: 760px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-      }
-      h1, h2, h3, h4 {
-        font-family: Georgia, serif;
-        color: #e8e6e1;
-        letter-spacing: -0.02em;
-      }
-      img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        display: block;
-        margin: 1.5rem auto;
-      }
-      blockquote {
-        border-left: 3px solid #4a4540;
-        padding-left: 1.5rem;
-        color: #a0998f;
-        font-style: italic;
-      }
-      pre {
-        background: #1a1a1a;
-        border: 1px solid #2a2a2a;
-        border-radius: 8px;
-        padding: 1rem 1.5rem;
-        overflow-x: auto;
-      }
-      code {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.875em;
-        background: #1e1e1e;
-        padding: 0.15em 0.4em;
-        border-radius: 4px;
-        color: #c9b99a;
-      }
-      a { color: #c9b99a; }
-    `,
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 18px;
+    line-height: 1.85;
+    color: #ccc8c2;
+    background: #161616;
+    max-width: 760px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  h1, h2, h3, h4 {
+    font-family: Georgia, serif;
+    color: #e8e6e1;
+    letter-spacing: -0.02em;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+    margin: 1.5rem auto;
+  }
+  blockquote {
+    border-left: 3px solid #4a4540;
+    padding-left: 1.5rem;
+    color: #a0998f;
+    font-style: italic;
+  }
+  pre {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    overflow-x: auto;
+  }
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875em;
+    background: #1e1e1e;
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    color: #c9b99a;
+  }
+  a { color: #c9b99a; }
+  ul {
+    list-style-type: disc;
+    padding-left: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  ol {
+    list-style-type: decimal;
+    padding-left: 1.75rem;
+    margin-bottom: 1.25rem;
+  }
+  li {
+    margin-bottom: 0.4rem;
+  }
+`,
   };
 
   ngOnInit(): void {
